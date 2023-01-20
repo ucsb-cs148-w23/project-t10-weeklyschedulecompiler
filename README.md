@@ -1,3 +1,5 @@
+https://github.com/ucsb-cs148-w23/project-t10-weeklyschedulecompiler.git
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
