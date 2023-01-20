@@ -1,6 +1,6 @@
 # project-t10-weeklyschedulecompiler
 
-Deployment here: 
+Deployment here: https://cyril-helloworld.onrender.com/ (sorry, may take some time to start, but it's a temporary deployment, and we'll switch to heroku later)
 
 Required installations:
 
