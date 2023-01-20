@@ -1,5 +1,9 @@
-# Cookbook meal prep planner
+# project-t10-weeklyschedulecompiler
 
-idk yet
+Deployment here: 
 
-List of members: Wesley Kam (wesleykam), Cyril Wang(cyril-wang), Dylan Chung (DylanC1222), Maya Ma (maya-maye), Tianyu Sun (tianyusun7), Luke Li (lukewli)
+Required installations:
+
+1. Install node and npm by following these instructions: https://ucsb-cs156.github.io/topics/node_windows/
+
+To deploy on localhost, clone the repository and open two terminals. On one, do `cd backend` and then `node server.js`, and on the other, do `cd frontend` and then `npm start` (`npm install` might be required first).
