@@ -1,4 +1,4 @@
-# Cookbook meal prep planner
+# Weekly Schedule Compiler
 
 
 Backend and database setup
