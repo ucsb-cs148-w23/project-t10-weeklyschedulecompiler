@@ -14,8 +14,10 @@ router.get(
     scope: [
       'email',
       'profile',
-      'https://www.googleapis.com/auth/calendar.events',
+      'https://www.googleapis.com/auth/calendar.events.readonly',
     ],
+    accessType: 'offline',
+    prompt: 'consent',
   })
 );
 
