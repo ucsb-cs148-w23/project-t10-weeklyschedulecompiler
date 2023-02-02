@@ -1,4 +1,5 @@
 import { Col, Container, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import '../style/DefaultLayout.css';
 
 const start = 'd-flex justify-content-start align-items-center';
@@ -6,6 +7,7 @@ const center = 'd-flex justify-content-center align-items-center';
 const end = 'd-flex justify-content-end align-items-center';
 
 export default function DefaultLayout({ children, header, component }) {
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -14,7 +16,7 @@ export default function DefaultLayout({ children, header, component }) {
             <h5
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                console.log('Goes back a page');
+                navigate('/');
               }}
             >
               Go back

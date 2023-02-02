@@ -7,6 +7,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Home from './pages/Home';
+import CreateGroupPage from './pages/CreateGroupPage';
 import GroupsPage from './pages/GroupsPage';
 
 function App() {
@@ -48,19 +49,12 @@ function App() {
   return (
     <div className="App">
       <AppNavbar user={user} />
-      {/* <Router>
-      <AppNavbar />
-        <Routes>
-          <Route path="/" exact component={Home} />
-        </Routes>
-      </Router> */}
-
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/create" element={<CreateGroupPage />} />
-          <Route path="/groups" element={<Groups />} />
+          <Route path="/groups" element={<GroupsPage />} />
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
         </Routes>
       </Router>
