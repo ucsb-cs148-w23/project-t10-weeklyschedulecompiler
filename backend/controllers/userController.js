@@ -31,23 +31,29 @@ async function updateUserEvents(req, res) {
         return;
     }
     console.log('Upcoming 10 events:');
-    userEvents = [];
+    let userEvents = [];
     events.map((event, i) => {
         var options = { hour12: false };
 
         const start = event.start.dateTime || event.start.date;
         const startDate = new Date(start);
-        // const startTime = startDate.toLocaleTimeString();
         const startTime = startDate.toLocaleString('en-US', options);
 
         const end = event.end.dateTime;
         const endDate = new Date(end);
-        // const endTime = endDate.toLocaleTimeString();
         const endTime = endDate.toLocaleString('en-US', options);
 
         userEvents.push([event.summary, startTime, endTime]);
     });
+
     console.log(userEvents);
+    const userEventsResponse = await User.findOneAndUpdate({ googleId: req.body.id }, {
+        events: userEvents
+    });
+
+    res.status(200).json({
+        message: 'User events updated successfully'
+    });
 }
 
 module.exports = {
