@@ -17,6 +17,7 @@ app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json());
 
 app.use(
   cors({

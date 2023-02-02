@@ -1,10 +1,23 @@
 import { useState, useEffect } from 'react';
 import AppNavbar from './components/Nav/AppNavbar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
+
+import { Button } from 'react-bootstrap';
+
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
+
+  const getEvents = async () => {
+    fetch('http://localhost:8000/api/user', {
+      method: 'PATCH',
+      body: JSON.stringify(user.user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
 
   useEffect(() => {
     if (loading) {
@@ -41,6 +54,7 @@ function App() {
     <div className="App">
       <AppNavbar user={user} />
       <Home />
+      <Button onClick={getEvents}>Get Events</Button>
       {/* <Router>
       <AppNavbar />
         <Routes>
