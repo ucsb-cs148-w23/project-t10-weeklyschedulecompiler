@@ -10,6 +10,8 @@ import Home from './pages/Home';
 import CreateGroupPage from './pages/CreateGroupPage';
 import GroupsPage from './pages/GroupsPage';
 
+import { Button } from 'react-bootstrap';
+
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
@@ -68,6 +70,7 @@ function App() {
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
         </Routes>
       </Router>
+      <Button onClick={getEvents}>Get Events</Button>
     </div>
   );
 }
