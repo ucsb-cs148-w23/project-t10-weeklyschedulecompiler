@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
 import AppNavbar from './components/Nav/AppNavbar';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import Home from './pages/Home';
+import CreateGroupPage from './pages/CreateGroupPage';
+import GroupsPage from './pages/GroupsPage';
 
 import { Button } from 'react-bootstrap';
 
@@ -47,20 +54,23 @@ function App() {
           });
         });
     }
+    console.log(user);
     setLoading(false);
   }, [loading]);
 
   return (
     <div className="App">
       <AppNavbar user={user} />
-      <Home />
-      <Button onClick={getEvents}>Get Events</Button>
-      {/* <Router>
-      <AppNavbar />
+      <Router>
         <Routes>
-          <Route path="/" exact component={Home} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/create" element={<CreateGroupPage />} />
+          <Route path="/groups" element={<GroupsPage />} />
+          {/* <Route path="/profile" element={<ProfilePage />} /> */}
         </Routes>
-      </Router> */}
+      </Router>
+      <Button onClick={getEvents}>Get Events</Button>
     </div>
   );
 }
