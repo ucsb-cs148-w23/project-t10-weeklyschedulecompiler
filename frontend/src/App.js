@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import AppNavbar from './components/Nav/AppNavbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
+import GroupsPage from './pages/GroupsPage';
+
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
@@ -34,19 +36,14 @@ function App() {
           });
         });
     }
+    console.log(user);
     setLoading(false);
   }, [loading]);
 
   return (
     <div className="App">
       <AppNavbar user={user} />
-      <Home />
-      {/* <Router>
-      <AppNavbar />
-        <Routes>
-          <Route path="/" exact component={Home} />
-        </Routes>
-      </Router> */}
+      {user.authenticated ? <GroupsPage /> : <Home />}
     </div>
   );
 }
