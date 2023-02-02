@@ -52,7 +52,8 @@ async function updateUserEvents(req, res) {
     });
 
     res.status(200).json({
-        message: 'User events updated successfully'
+        message: 'User events updated successfully',
+        events: userEvents
     });
 }
 
