@@ -6,7 +6,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const authRoutes = require('./routes/auth-routes');
-const userRoutes = require('./routes/users');
 const keys = require('./config/keys');
 const config = require('./config');
 
