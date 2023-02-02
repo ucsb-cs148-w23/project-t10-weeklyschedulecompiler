@@ -6,9 +6,9 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const authRoutes = require('./routes/auth-routes');
+const userRoutes = require('./routes/users');
 const keys = require('./config/keys');
-
-require('dotenv').config();
+const config = require('./config');
 
 const app = express();
 
@@ -27,6 +27,7 @@ app.use(
 );
 
 app.use('/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
 const authCheck = (req, res, next) => {
   if (!req.user) {
@@ -58,10 +59,10 @@ app.get('/', (req, res) => {
 
 mongoose.set("strictQuery", true);
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(config.mongoURI)
     .then(() => { 
-        app.listen(process.env.PORT, () => {
-            console.log('connected to db & listening on port', process.env.PORT)
+        app.listen(config.port, () => {
+            console.log('connected to db & listening on port', config.port)
         })
     })
     .catch((error) => {
