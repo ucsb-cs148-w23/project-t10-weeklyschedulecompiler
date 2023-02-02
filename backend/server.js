@@ -26,7 +26,6 @@ app.use(
 );
 
 app.use('/auth', authRoutes);
-app.use('/api/user', userRoutes);
 
 const authCheck = (req, res, next) => {
   if (!req.user) {
