@@ -4,11 +4,7 @@ import DefaultLayout from '../layouts/DefaultLayout';
 
 export default function GroupsPage() {
   return (
-    <DefaultLayout
-      header={'Groups'}
-      centered={false}
-      component={<CreateGroupButton />}
-    >
+    <DefaultLayout header={'Groups'} component={<CreateGroupButton />}>
       <Groups />
     </DefaultLayout>
   );
