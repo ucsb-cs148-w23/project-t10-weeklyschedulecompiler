@@ -8,15 +8,8 @@ import {
 } from 'react-router-dom';
 import Home from './pages/Home';
 import CreateGroupPage from './pages/CreateGroupPage';
-<<<<<<< HEAD
 import Cal from './components/calender/Cal';
 import WeekCal from './components/calender/WeekCal';
-=======
-import GroupsPage from './pages/GroupsPage';
-
-import { Button } from 'react-bootstrap';
-
->>>>>>> 6eba8e8357f920ac1075922ec2177eedb1cda25f
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
@@ -72,26 +65,21 @@ function App() {
 
   return (
     <div className="App">
-<<<<<<< HEAD
       <AppNavbar />
       <Home />
       <Cal />
       <WeekCal />
       {/* <Router>
       <AppNavbar />
-=======
-      <AppNavbar user={user} />
-      <Router>
->>>>>>> 6eba8e8357f920ac1075922ec2177eedb1cda25f
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/create" element={<CreateGroupPage />} />
           <Route path="/groups" element={<GroupsPage />} />
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
-        </Routes>
+        {/* </Routes>
       </Router>
-      <Button onClick={getEvents}>Get Events</Button>
+      <Button onClick={getEvents}>Get Events</Button> */}
     </div>
   );
 }
