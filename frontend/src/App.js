@@ -1,24 +1,97 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppNavbar from './components/Nav/AppNavbar';
-import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import Home from './pages/Home';
 import CreateGroupPage from './pages/CreateGroupPage';
+<<<<<<< HEAD
 import Cal from './components/calender/Cal';
 import WeekCal from './components/calender/WeekCal';
+=======
+import GroupsPage from './pages/GroupsPage';
+
+import { Button } from 'react-bootstrap';
+
+>>>>>>> 6eba8e8357f920ac1075922ec2177eedb1cda25f
 function App() {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState({ authenticated: false, user: null });
+  const [loading, setLoading] = useState(true);
+
+  const getEvents = async () => {
+    const response = fetch('http://localhost:8000/api/user', {
+      method: 'PATCH',
+      body: JSON.stringify(user.user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('failed to fetch events');
+    }).then((responseJson) => {
+      console.log(responseJson);
+    })
+  }
+
+  useEffect(() => {
+    if (loading) {
+      fetch('http://localhost:8000/check', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': true,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error('failed to authenticate user');
+        })
+        .then((responseJson) => {
+          setUser({
+            authenticated: true,
+            user: responseJson.user,
+          });
+        })
+        .catch((error) => {
+          setUser({
+            authenticated: false,
+            error: 'Failed to authenticate user',
+          });
+        });
+    }
+    console.log(user);
+    setLoading(false);
+  }, [loading]);
+
   return (
     <div className="App">
+<<<<<<< HEAD
       <AppNavbar />
       <Home />
       <Cal />
       <WeekCal />
       {/* <Router>
       <AppNavbar />
+=======
+      <AppNavbar user={user} />
+      <Router>
+>>>>>>> 6eba8e8357f920ac1075922ec2177eedb1cda25f
         <Routes>
-          <Route path="/" exact component={Home} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/create" element={<CreateGroupPage />} />
+          <Route path="/groups" element={<GroupsPage />} />
+          {/* <Route path="/profile" element={<ProfilePage />} /> */}
         </Routes>
-      </Router> */}
+      </Router>
+      <Button onClick={getEvents}>Get Events</Button>
     </div>
   );
 }
