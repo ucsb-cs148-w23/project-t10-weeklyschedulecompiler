@@ -9,6 +9,7 @@ import {
 import Home from './pages/Home';
 import CreateGroupPage from './pages/CreateGroupPage';
 import GroupsPage from './pages/GroupsPage';
+import GroupDetails from './pages/GroupDetails';
 
 import { Button } from 'react-bootstrap';
 
@@ -23,15 +24,17 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      throw new Error('failed to fetch events');
-    }).then((responseJson) => {
-      console.log(responseJson);
     })
-  }
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        throw new Error('failed to fetch events');
+      })
+      .then((responseJson) => {
+        console.log(responseJson);
+      });
+  };
 
   useEffect(() => {
     if (loading) {
@@ -74,6 +77,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/create" element={<CreateGroupPage />} />
           <Route path="/groups" element={<GroupsPage />} />
+          <Route path="/details/:id" element={<GroupDetails />} />
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
         </Routes>
       </Router>
