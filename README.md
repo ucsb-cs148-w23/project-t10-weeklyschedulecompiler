@@ -55,14 +55,21 @@ Backend
 
 ## Installation Steps
 
+1. git clone this repository (if you have ssh setup: git clone git@github.com:ucsb-cs148-w23/project-t10-weeklyschedulecompiler.git)
+2. cd project-t10-weeklyschedulecompiler
+3. npm install -C ./frontend && npm install -C ./backend
+4. touch ./backend/.env or create .env file some other way and set environment variables (PORT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL, MONGO_URI)
 
-
-TODO: Describe the installation process (making sure you give complete instructions to get your project going from scratch). Instructions need to be such that a user can just copy/paste the commands to get things set up and running. Note that with the use of GitHub Actions, these instructions can eventually be fully automated (e.g. with act, you can run GitHub Actions locally).
+To run locally: 
+1. Create two total terminals at root directory
+2. In one terminal: cd backend && node server.js
+3. In the other terminal cd frontend && npm start
+4. Everything should be complete
 
 ## Functionality
 
 1. Login using your Google account
-2. From the home page, you should be able to see your google calendar events
+2. From the home page, you should be able to see your Google Calendar events
 3. From here, there are two paths you can take: create a group or check which groups you are part of
 
  - If you want to create a group, click create a group in the navbar and input any necessary information, such as name, description, and group members
