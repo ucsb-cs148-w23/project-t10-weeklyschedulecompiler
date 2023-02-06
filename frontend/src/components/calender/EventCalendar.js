@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  DayPilot,
   DayPilotCalendar,
   DayPilotNavigator,
 } from '@daypilot/daypilot-lite-react';
@@ -31,32 +30,55 @@ class EventCalendar extends Component {
     return this.calendarRef.current.control;
   }
 
+  getEvents = () => {
+    fetch(`http://localhost:8000/api/user/${this.props.user.user.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        throw new Error('failed to fetch events');
+      })
+      .then((responseJson) => {
+        const events = responseJson.map((event, idx) => {
+          return {
+            id: idx,
+            text: event[0],
+            start: event[1],
+            end: event[2],
+          };
+        });
+        this.calendar.update({ events });
+      });
+  };
+
+  getUpdatedEvents = () => {
+    fetch('http://localhost:8000/api/user', {
+      method: 'PATCH',
+      body: JSON.stringify(this.props.user.user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        throw new Error('failed to fetch events');
+      })
+      .then((responseJson) => {
+        this.getEvents();
+      });
+  };
+
   componentDidMount() {
     setTimeout(() => {
       if (this.props.user.authenticated) {
-        fetch(`http://localhost:8000/api/user/${this.props.user.user.id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        })
-          .then((response) => {
-            if (response.status === 200) {
-              return response.json();
-            }
-            throw new Error('failed to fetch events');
-          })
-          .then((responseJson) => {
-            const events = responseJson.map((event, idx) => {
-              return {
-                id: idx,
-                text: event[0],
-                start: event[1],
-                end: event[2],
-              };
-            });
-            this.calendar.update({ events });
-          });
+        this.getUpdatedEvents();
       }
     }, 500);
   }

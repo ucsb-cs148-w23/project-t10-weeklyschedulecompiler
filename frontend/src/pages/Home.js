@@ -7,11 +7,7 @@ import { Container } from 'react-bootstrap';
 function Home({ user }) {
   return (
     <>
-      {user.authenticated ? (
-        <Container style={{ marginTop: '2vh' }}>
-          <EventCalendar user={user} />
-        </Container>
-      ) : (
+      {!user.authenticated ? (
         <div className="Home">
           <div></div>
           <div className="headerContainer">
@@ -28,6 +24,10 @@ function Home({ user }) {
             </button>
           </div>
         </div>
+      ) : (
+        <Container style={{ marginTop: '2vh' }}>
+          <EventCalendar user={user} />
+        </Container>
       )}
     </>
   );
