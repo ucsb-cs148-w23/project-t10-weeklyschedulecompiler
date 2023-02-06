@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import AppNavbar from './components/Nav/AppNavbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
 import CreateGroupPage from './pages/CreateGroupPage';
 import GroupsPage from './pages/GroupsPage';
 import GroupPage from './pages/GroupPage';
+import HomePage from './pages/HomePage';
+import Main from './pages/Main';
 
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
@@ -47,7 +48,8 @@ function App() {
       <AppNavbar user={user} />
       <Router>
         <Routes>
-          <Route path="/" element={<Home user={user} />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/home" element={<HomePage user={user} />} />
           <Route path="/create" element={<CreateGroupPage />} />
           <Route path="/groups" element={<GroupsPage user={user} />} />
           <Route path="/groups/:id" element={<GroupPage />} />

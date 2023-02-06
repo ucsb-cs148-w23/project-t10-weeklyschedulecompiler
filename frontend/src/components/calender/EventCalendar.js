@@ -6,6 +6,7 @@ import {
 
 const styles = {
   wrap: {
+    marginTop: '2vh',
     display: 'flex',
   },
   left: {
@@ -30,32 +31,6 @@ class EventCalendar extends Component {
     return this.calendarRef.current.control;
   }
 
-  getEvents = () => {
-    fetch(`http://localhost:8000/api/user/${this.props.user.user.id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        throw new Error('failed to fetch events');
-      })
-      .then((responseJson) => {
-        const events = responseJson.map((event, idx) => {
-          return {
-            id: idx,
-            text: event[0],
-            start: event[1],
-            end: event[2],
-          };
-        });
-        this.calendar.update({ events });
-      });
-  };
-
   getUpdatedEvents = () => {
     fetch('http://localhost:8000/api/user', {
       method: 'PATCH',
@@ -71,7 +46,16 @@ class EventCalendar extends Component {
         throw new Error('failed to fetch events');
       })
       .then((responseJson) => {
-        this.getEvents();
+        console.log(responseJson);
+        const events = responseJson?.events.map((event, idx) => {
+          return {
+            id: idx,
+            text: event[0],
+            start: event[1],
+            end: event[2],
+          };
+        });
+        this.calendar.update({ events });
       });
   };
 
