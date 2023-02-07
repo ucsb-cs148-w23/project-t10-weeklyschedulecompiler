@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import CreateGroupForm from '../components/forms/CreateGroupForm';
+import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
 
-const CreateGroupPage = ({ user, loading }) => {
+const GroupPage = ({ user }) => {
+  console.log(user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,17 +24,9 @@ const CreateGroupPage = ({ user, loading }) => {
 
   return (
     <Container expand="xl" className="pt-4 flex-grow-1">
-      <div className="">
-        <h1
-          className="text-decoration-underline d-flex justify-content-center align-items-center"
-          style={{ height: '250px', fontSize: '75px' }}
-        >
-          Create a Group
-        </h1>
-      </div>
-      <CreateGroupForm></CreateGroupForm>
+      <AddGroupMembersForm></AddGroupMembersForm>
     </Container>
   );
 };
 
-export default CreateGroupPage;
+export default GroupPage;
