@@ -4,7 +4,7 @@ const {
     createGroup, 
     deleteGroup, 
     updateGroup,
-    updateGroupMember
+    updateGroupDeleteMember
 } = require('../controllers/groupController')
 // GET a single group
 router.get('/:id', getGroup)
@@ -19,6 +19,6 @@ router.delete('/:id', deleteGroup)
 router.patch('/:id', updateGroup)
 
 //UPDATE group members
-router.patch('/:id', updateGroupMember)
+router.patch('/members/:id', updateGroupDeleteMember)
 
 module.exports = router;

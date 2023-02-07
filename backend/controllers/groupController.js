@@ -76,7 +76,7 @@ const updateGroup = async (req, res) => {
   res.status(200).json(group)
 }
 
-const updateGroupMember = async (req, res) => {
+const updateGroupDeleteMember = async (req, res) => {
   const { id } = req.params
   const email = req.body.email
 
@@ -91,8 +91,8 @@ const updateGroupMember = async (req, res) => {
   }
 
   //delete groupId from specific user
-  const groupId = user.groupIds.indexOf(id)
-  user.groupIds.splice(groupId, 1)
+  let index = user.groupIds.indexOf(id)
+  user.groupIds.splice(index, 1)
   user.save()
 
   let group = await Group.findOne({ _id: id })
@@ -102,8 +102,8 @@ const updateGroupMember = async (req, res) => {
   }
 
   //delete email of that person from groupMembers
-  const memberEmail = group.groupMembers.indexOf(email)
-  group.groupMembers.splice(memberEmail, 1)
+  index = group.groupMembers.indexOf(email)
+  group.groupMembers.splice(index, 1)
   group.save()
 
   res.status(200).json(group)
@@ -114,7 +114,7 @@ module.exports = {
   createGroup,
   deleteGroup,
   updateGroup,
-  updateGroupMember
+  updateGroupDeleteMember
 }
 
 
