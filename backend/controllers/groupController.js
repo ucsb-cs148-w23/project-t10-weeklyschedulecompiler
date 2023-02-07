@@ -25,7 +25,17 @@ const createGroup = async (req, res) => {
 
   // add to the database
   try {
-    const group = await Group.create({ name: groupName, groupMembers: [{username, email}] })
+    const group = await Group.create({ name: groupName, groupMembers: [[username, email]] })
+
+    const user = await User.findOne({ email: email })
+
+    if (!user) {
+      return res.status(400).json({ error: 'No such user' })
+    }
+    
+    user.groupIds.push(group._id)
+    user.save()
+
     res.status(200).json(group)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -73,7 +83,7 @@ const updateGroup = async (req, res) => {
     return res.status(400).json({ error: 'No such group' })
   }
 
-  group.groupMembers.push(email)
+  group.groupMembers.push([user.name, email])
   group.groupMembers = [...new Set(group.groupMembers)]
   group.save()
 
@@ -106,8 +116,11 @@ const updateGroupDeleteMember = async (req, res) => {
   }
 
   //delete email of that person from groupMembers
-  index = group.groupMembers.indexOf(email)
-  group.groupMembers.splice(index, 1)
+  for (let i = 0; i < group.groupMembers.length; i++) {
+    if (group.groupMembers[i][1] === email) {
+      group.groupMembers.splice(i, 1)
+    }
+  }
   group.save()
 
   res.status(200).json(group)
