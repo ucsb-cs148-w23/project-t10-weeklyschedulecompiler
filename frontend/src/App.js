@@ -6,7 +6,6 @@ import GroupsPage from './pages/GroupsPage';
 import GroupPage from './pages/GroupPage';
 import HomePage from './pages/HomePage';
 import Main from './pages/Main';
-
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
