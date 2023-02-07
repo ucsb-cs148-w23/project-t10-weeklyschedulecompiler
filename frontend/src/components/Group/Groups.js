@@ -5,7 +5,7 @@ import { GroupData } from '../../test/groups.mock.data';
 
 const data = GroupData;
 
-const Groups = () => {
+const Groups = ({groups}) => {
   const keys = Object.keys(data);
 
   return (

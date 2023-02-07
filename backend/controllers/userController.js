@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 
 const User = require('../models/userModel');
+const Group = require('../models/groupModel')
 const config = require('../config');
 
 async function getUserEvents(req, res) {
@@ -78,8 +79,28 @@ async function getUserGroups(req, res) {
     res.status(200).json(user.groupIds)
 }
 
+async function getUserGroupsInfo(req, res) {
+    const googleId = req.params.id
+    
+    const user = await User.findOne({ googleId: googleId });
+
+    const groupInfo = [];
+
+    if (!user) {
+        res.status(404).json({ error: 'No such user' })
+    }
+
+    for (let i = 0; i < user.groupIds.length; i++) {
+        const group = await Group.findOne({ _id: user.groupIds[i] });
+        groupInfo.push(group)
+    }
+
+    res.status(200).json(groupInfo)
+}
+
 module.exports = {
     getUserEvents,
     updateUserEvents,
-    getUserGroups
+    getUserGroups,
+    getUserGroupsInfo
 }

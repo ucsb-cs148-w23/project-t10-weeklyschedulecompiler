@@ -14,7 +14,7 @@ const GroupCard = ({ data }) => {
           <Row>
             <Col>
               <Card.Title>{data.name}</Card.Title>
-              <Card.Text>{data.description}</Card.Text>
+              {/* <Card.Text>{data.description}</Card.Text> */}
             </Col>
             <Col>
               <Card.Title>Team members:</Card.Title>
