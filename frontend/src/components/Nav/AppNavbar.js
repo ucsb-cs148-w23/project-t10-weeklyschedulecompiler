@@ -7,15 +7,16 @@ function AppNavbar({ user }) {
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="/">Calendar App</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/create" style={{ marginTop: '3px' }}>
-              Create Group
-            </Nav.Link>
-            <Nav.Link href="/groups" style={{ marginTop: '3px' }}>
-              Groups
-            </Nav.Link>
-          </Nav>
-
+          {user.authenticated ? (
+            <Nav className="me-auto">
+              <Nav.Link href="/create" style={{ marginTop: '3px' }}>
+                Create Group
+              </Nav.Link>
+              <Nav.Link href="/groups" style={{ marginTop: '3px' }}>
+                Groups
+              </Nav.Link>
+            </Nav>
+          ) : null}
           <Nav className="ml-auto">
             <Nav.Link href="/" style={{ marginRight: '10px' }}>
               Home
