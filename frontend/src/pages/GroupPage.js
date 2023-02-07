@@ -11,13 +11,13 @@ const CLASSNAME = 'd-flex justify-content-center align-items-center';
 let nextId = 0;
 
 export default function GroupDetails({ user }) {
+  console.log(user);
+  const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [edit, setEdit] = useState(false);
   const path = window.location.pathname;
   let url =
     'http://localhost:8000/api/group' + path.substring(path.lastIndexOf('/'));
-  console.log(user);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:8000/check', {
