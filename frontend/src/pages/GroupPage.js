@@ -4,20 +4,35 @@ import { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
-import { Form } from 'react-bootstrap';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 let nextId = 0;
 
-export default function GroupDetails() {
+export default function GroupDetails({ user }) {
   const [members, setMembers] = useState([]);
   const [edit, setEdit] = useState(false);
   const path = window.location.pathname;
   let url =
     'http://localhost:8000/api/group' + path.substring(path.lastIndexOf('/'));
+  console.log(user);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    fetch('http://localhost:8000/check', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true,
+      },
+    }).then((response) => {
+      if (response.status === 200) return response.json();
+      navigate('/');
+    });
+
     fetch(url, {
       method: 'GET',
     })
