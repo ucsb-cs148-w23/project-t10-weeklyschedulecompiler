@@ -69,17 +69,7 @@ export default function GroupDetails({ user }) {
             <ul>
               {members.map((member) => (
                 <li key={member.id}>
-                  {member.name}{' '}
-                  {edit && (
-                    <Button
-                      onClick={() => {
-                        setMembers(members.filter((m) => m.id !== member.id));
-                        nextId -= 1;
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  )}
+                  {member} {edit && <Button>Delete</Button>}
                 </li>
               ))}
             </ul>
