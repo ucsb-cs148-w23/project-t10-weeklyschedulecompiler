@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CreateGroupPage from './pages/CreateGroupPage';
 import GroupsPage from './pages/GroupsPage';
 import GroupPage from './pages/GroupPage';
-import HomePage from './pages/HomePage';
-import Main from './pages/Main';
+
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
@@ -30,7 +29,6 @@ function App() {
             authenticated: true,
             user: responseJson.user,
           });
-          window.sessionStorage.setItem('user', JSON.stringify(responseJson.user));
         })
         .catch((error) => {
           setUser({
@@ -55,7 +53,7 @@ function App() {
             element={<CreateGroupPage user={user} loading={loading} />}
           />
           <Route path="/groups" element={<GroupsPage user={user} />} />
-          <Route path="/groups/:id" element={<GroupPage user={user} />} />
+          <Route path="/groups/:id" element={<GroupPage />} /> 
           {/* <Route path="/profile" element={<ProfilePage />} /> */}
         </Routes>
       </Router>
