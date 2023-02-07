@@ -4,6 +4,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path')
 
 const authRoutes = require('./routes/auth-routes');
 const groupRoutes = require('./routes/groups');
@@ -43,9 +44,9 @@ const authCheck = (req, res, next) => {
   }
 };
 
-app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Authenticate with Google</a>');
-});
+// app.get('/', (req, res) => {
+//   res.send('<a href="/auth/google">Authenticate with Google</a>');
+// });
 
 app.get('/check', authCheck, (req, res) => {
   res.status(200).json({
@@ -56,9 +57,20 @@ app.get('/check', authCheck, (req, res) => {
   });
 });
 
-app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Authenticate with Google</a>');
-});
+// app.get('/', (req, res) => {
+//   res.send('<a href="/auth/google">Authenticate with Google</a>');
+// });
+
+
+if(config.nodeEnv === 'production') {
+  // Serve static files from the React frontend app
+  app.use(express.static(path.join(__dirname, '/../frontend/build')))
+
+  // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/../frontend/build/index.html'))
+  })
+}
 
 mongoose.set("strictQuery", true);
 
@@ -71,5 +83,3 @@ mongoose.connect(config.mongoURI)
     .catch((error) => {
         console.log(error)
     })
-
-
