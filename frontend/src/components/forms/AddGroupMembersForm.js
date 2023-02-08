@@ -31,7 +31,7 @@ const AddGroupMembersForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>New Member Email:</label>
+      <label className="me-1">New Member Email: </label>
       <input
         type="text"
         onChange={(e) => setEmail(e.target.value)}

@@ -1,13 +1,16 @@
 import DefaultLayout from '../layouts/DefaultLayout';
-import { Button, Container } from 'react-bootstrap';
-import { useState } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {
+  Button,
+  Container,
+  CloseButton,
+  Modal,
+  ListGroup,
+  Row,
+  Col,
+} from 'react-bootstrap';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CloseButton from 'react-bootstrap/CloseButton';
-import Modal from 'react-bootstrap/Modal';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 let nextId = 0;
@@ -84,21 +87,33 @@ export default function GroupDetails({ user }) {
             xs={6}
             className="d-flex justify-content-center align-items-center mx-auto"
           >
-            <div>
+            <ListGroup>
               {members.map((member) => (
-                <div>
-                  {member}{' '}
-                  {edit && (
-                    <CloseButton
-                      onClick={() => {
-                        handleShow();
-                        setDelete(member);
-                      }}
-                    ></CloseButton>
-                  )}
-                </div>
+                <ListGroup.Item
+                  className="overflow-auto d-flex align-items-center"
+                  style={{ width: '350px', height: '35px' }}
+                >
+                  <Row className="d-flex">
+                    <Col className="me-3" style={{ width: '275px' }}>
+                      {member}{' '}
+                    </Col>
+                    <Col
+                      className="d-flex justify-content-end"
+                      style={{ witdh: '100px' }}
+                    >
+                      {edit && (
+                        <CloseButton
+                          onClick={() => {
+                            handleShow();
+                            setDelete(member);
+                          }}
+                        ></CloseButton>
+                      )}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
               ))}
-            </div>
+            </ListGroup>
           </Col>
           <Col></Col>
         </Row>
