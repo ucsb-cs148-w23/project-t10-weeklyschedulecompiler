@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CloseButton from 'react-bootstrap/CloseButton';
+import Modal from 'react-bootstrap/Modal';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 let nextId = 0;
@@ -15,6 +17,11 @@ export default function GroupDetails({ user }) {
   const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [show, setShow] = useState(false);
+  const [del_email, setDelete] = useState('');
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const path = window.location.pathname;
   let url =
     'http://localhost:8000/api/group' + path.substring(path.lastIndexOf('/'));
@@ -47,15 +54,22 @@ export default function GroupDetails({ user }) {
         console.log(responseJson.groupMembers);
         setMembers(responseJson.groupMembers);
       });
-  }, []);
+  }, [edit]);
 
   return (
     <DefaultLayout className={CLASSNAME}>
       <Container fluid>
-        <Row className="d-flex justify-content-center align-items-center">
-          <Col>Group Details</Col>
+        <Row className="mb-3">
+          <Col></Col>
+          <Col
+            xs={6}
+            className="d-flex justify-content-center align-items-center mx-auto fs-1"
+          >
+            Group Details
+          </Col>
           <Col>
             <Button
+              className="d-flex justify-content-center align-items-center mx-auto"
               onClick={() => {
                 setEdit((prevEdit) => !prevEdit);
               }}
@@ -64,21 +78,58 @@ export default function GroupDetails({ user }) {
             </Button>
           </Col>
         </Row>
-        <Row>
-          <Col xs={9}>
-            <ul>
+        <Row className="mb-3">
+          <Col></Col>
+          <Col
+            xs={6}
+            className="d-flex justify-content-center align-items-center mx-auto"
+          >
+            <div>
               {members.map((member) => (
-                <li key={member.id}>
-                  {member} {edit && <Button>Delete</Button>}
-                </li>
+                <div>
+                  {member}{' '}
+                  {edit && (
+                    <CloseButton
+                      onClick={() => {
+                        handleShow();
+                        setDelete(member);
+                      }}
+                    ></CloseButton>
+                  )}
+                </div>
               ))}
-            </ul>
+            </div>
           </Col>
+          <Col></Col>
         </Row>
         <Row>
-          <Col>{edit && <AddGroupMembersForm></AddGroupMembersForm>}</Col>
+          <Col></Col>
+          <Col className="d-flex justify-content-center align-items-center mx-auto">
+            {edit && <AddGroupMembersForm></AddGroupMembersForm>}
+          </Col>
+          <Col></Col>
         </Row>
       </Container>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Remove Email</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to remove user</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleClose();
+              setMembers(members.filter((m) => m !== del_email));
+            }}
+          >
+            Delete user
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </DefaultLayout>
   );
 }
