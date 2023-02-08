@@ -44,9 +44,9 @@ const authCheck = (req, res, next) => {
   }
 };
 
-// app.get('/', (req, res) => {
-//   res.send('<a href="/auth/google">Authenticate with Google</a>');
-// });
+app.get('/', (req, res) => {
+  res.send('<a href="/auth/google">Authenticate with Google</a>');
+});
 
 app.get('/check', authCheck, (req, res) => {
   res.status(200).json({
@@ -56,11 +56,6 @@ app.get('/check', authCheck, (req, res) => {
     cookies: req.cookies,
   });
 });
-
-// app.get('/', (req, res) => {
-//   res.send('<a href="/auth/google">Authenticate with Google</a>');
-// });
-
 
 if(config.nodeEnv === 'production') {
   // Serve static files from the React frontend app
