@@ -46,17 +46,4 @@ function CreateGroupForm({user}) {
   }
   
 export default CreateGroupForm;
-  
 
-      // <Form onSubmit={createGroup} style={{marginLeft: "100px", fontSize: "30px", marginTop: "100px"}}>
-      //   <Form.Group className="mb-3">
-      //     <Form.Label style={{marginLeft: "10px", fontSize: "30px"}}>Group Name</Form.Label>
-      //     <Form.Control type="text" 
-      //     placeholder="Enter Group Name" 
-      //     onChange={(e) => setInput(e.target.value)}
-      //     style={{fontSize: "20px", marginBottom: "50px"}}
-      //     required
-      //     />
-      //   </Form.Group>
-      //   <Button type="submit" style={{fontSize: "30px"}} onClick={() => setSubmittedInput(input)}>Create!</Button>
-      // </Form>
