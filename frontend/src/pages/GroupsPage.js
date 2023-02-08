@@ -12,7 +12,7 @@ export default function GroupsPage({ user }) {
   const [loading, setLoading] = useState([]);
 
   const updateEvents = () => {
-    fetch(`http://localhost:8000/api/user/${user.user.id}`, {
+    fetch(`https://project-t10-schedulecompiler.herokuapp.com/api/user/${user.user.id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -31,7 +31,7 @@ export default function GroupsPage({ user }) {
 
   useEffect(() => {
     if (loading) {
-      fetch('http://localhost:8000/check', {
+      fetch('https://project-t10-schedulecompiler.herokuapp.com/check', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -44,7 +44,7 @@ export default function GroupsPage({ user }) {
         navigate('/');
       });
       setTimeout(() => {
-        fetch(`http://localhost:8000/api/user/groupsinfo/${user.user.id}`, {
+        fetch(`https://project-t10-schedulecompiler.herokuapp.com/api/user/groupsinfo/${user.user.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

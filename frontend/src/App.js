@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     if (loading) {
-      fetch('http://localhost:8000/check', {
+      fetch('/check', {
         method: 'GET',
         credentials: 'include',
         headers: {

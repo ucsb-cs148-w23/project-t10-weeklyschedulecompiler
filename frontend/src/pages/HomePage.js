@@ -7,7 +7,7 @@ export default function HomePage({ user }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8000/check', {
+    fetch('https://project-t10-schedulecompiler.herokuapp.com/check', {
       method: 'GET',
       credentials: 'include',
       headers: {

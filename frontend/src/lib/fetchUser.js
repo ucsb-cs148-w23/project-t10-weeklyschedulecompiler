@@ -1,5 +1,5 @@
 export const fetchUserGroups = (user) => {
-  fetch(`http://localhost:8000/api/user/groups/${user.user.id}`, {
+  fetch(`https://project-t10-schedulecompiler.herokuapp.com/api/user/groups/${user.user.id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

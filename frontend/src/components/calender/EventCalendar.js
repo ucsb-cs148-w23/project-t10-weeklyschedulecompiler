@@ -32,7 +32,7 @@ class EventCalendar extends Component {
   }
 
   getUpdatedEvents = () => {
-    fetch('http://localhost:8000/api/user', {
+    fetch('https://project-t10-schedulecompiler.herokuapp.com/api/user', {
       method: 'PATCH',
       body: JSON.stringify(this.props.user.user),
       headers: {

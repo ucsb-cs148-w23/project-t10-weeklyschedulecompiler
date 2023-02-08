@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 export default function UpdateUserEventsButton({ user, handler }) {
 
     const updateEvents = () => {
-        fetch('http://localhost:8000/api/user', {
+        fetch('https://project-t10-schedulecompiler.herokuapp.com/api/user', {
             method: 'PATCH',
             body: JSON.stringify(user.user),
             headers: {

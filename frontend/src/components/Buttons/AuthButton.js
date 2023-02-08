@@ -4,9 +4,9 @@ export default function AuthButton({ user }) {
   return (
     <>
       {user.authenticated ? (
-        <Button href="http://localhost:8000/auth/logout">Log out</Button>
+        <Button href="https://project-t10-schedulecompiler.herokuapp.com/auth/logout">Log out</Button>
       ) : (
-        <Button href="http://localhost:8000/auth/google">Sign in</Button>
+        <Button href="https://project-t10-schedulecompiler.herokuapp.com/auth/google">Sign in</Button>
       )}
     </>
   );

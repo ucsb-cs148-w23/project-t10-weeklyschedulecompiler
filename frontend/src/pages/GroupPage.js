@@ -27,10 +27,10 @@ export default function GroupDetails({ user }) {
   const handleShow = () => setShow(true);
   const path = window.location.pathname;
   let url =
-    'http://localhost:8000/api/group' + path.substring(path.lastIndexOf('/'));
+    'https://project-t10-schedulecompiler.herokuapp.com/api/group' + path.substring(path.lastIndexOf('/'));
 
   useEffect(() => {
-    fetch('http://localhost:8000/check', {
+    fetch('https://project-t10-schedulecompiler.herokuapp.com/check', {
       method: 'GET',
       credentials: 'include',
       headers: {

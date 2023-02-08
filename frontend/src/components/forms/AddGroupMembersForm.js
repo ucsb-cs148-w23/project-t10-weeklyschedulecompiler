@@ -8,7 +8,7 @@ const AddGroupMembersForm = () => {
 
     const path = window.location.pathname;
     let url =
-      'http://localhost:8000/api/group' + path.substring(path.lastIndexOf('/'));
+      'https://project-t10-schedulecompiler.herokuapp.com/api/group' + path.substring(path.lastIndexOf('/'));
     const memberEmails = { email };
 
     fetch(url, {
