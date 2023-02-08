@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: config.nodeEnv === 'production' ? 'https://project-t10-schedulecompiler.herokuapp.com' : 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
