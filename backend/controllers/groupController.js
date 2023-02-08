@@ -26,7 +26,7 @@ const createGroup = async (req, res) => {
 
   // add to the database
   try {
-    const group = await Group.create({ name: groupName, groupMembers: [{googleId, username, email}] })
+    const group = await Group.create({ name: groupName, groupMembers: [[googleId, username, email]] })
     res.status(200).json(group)
   } catch (error) {
     res.status(400).json({ error: error.message })

@@ -7,7 +7,6 @@ function CreateGroupForm({user}) {
 
     const createGroup = (e) => {
       e.preventDefault()
-      console.log(user)
       const body = { groupName: name, email: user.user.email, username: user.user.displayName, googleId: user.user.id }
 
       fetch('http://localhost:8000/api/group', {
