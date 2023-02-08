@@ -22,10 +22,11 @@ const createGroup = async (req, res) => {
   const groupName = req.body.groupName;
   const email = req.body.email;
   const username = req.body.username;
+  const googleId = req.body.googleId;
 
   // add to the database
   try {
-    const group = await Group.create({ name: groupName, groupMembers: [[username, email]] })
+    const group = await Group.create({ name: groupName, groupMembers: [[googleId, username, email]] })
 
     const user = await User.findOne({ email: email })
 
@@ -35,6 +36,9 @@ const createGroup = async (req, res) => {
     
     user.groupIds.push(group._id)
     user.save()
+
+
+    
 
     res.status(200).json(group)
   } catch (error) {
