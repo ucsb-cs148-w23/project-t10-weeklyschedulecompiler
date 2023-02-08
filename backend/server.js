@@ -44,10 +44,6 @@ const authCheck = (req, res, next) => {
   }
 };
 
-app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Authenticate with Google</a>');
-});
-
 app.get('/check', authCheck, (req, res) => {
   res.status(200).json({
     authenticated: true,
