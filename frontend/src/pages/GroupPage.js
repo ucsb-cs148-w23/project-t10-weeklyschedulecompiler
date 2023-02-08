@@ -11,6 +11,7 @@ import {
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { config } from '../Constants';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 let nextId = 0;
@@ -27,10 +28,10 @@ export default function GroupDetails({ user }) {
   const handleShow = () => setShow(true);
   const path = window.location.pathname;
   let url =
-    'https://project-t10-schedulecompiler.herokuapp.com/api/group' + path.substring(path.lastIndexOf('/'));
+    config.url+'/api/group' + path.substring(path.lastIndexOf('/'));
 
   useEffect(() => {
-    fetch('https://project-t10-schedulecompiler.herokuapp.com/check', {
+    fetch(config.url+'/check', {
       method: 'GET',
       credentials: 'include',
       headers: {
