@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { useState } from 'react';
-import { config } from '../Constants';
+import { config } from '../../Constants';
 
 function CreateGroupForm({user}) {
 
