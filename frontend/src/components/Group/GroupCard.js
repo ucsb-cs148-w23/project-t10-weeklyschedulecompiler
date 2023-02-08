@@ -20,12 +20,12 @@ const GroupCard = ({ data }) => {
           <Card.Text>
             {data?.groupMembers.map((member, idx) => {
               if (idx === numMembers - 1) {
-                if (member[0]) {
-                  return member[0];
+                if (member[1]) {
+                  return member[1];
                 }
               } else {
-                if (member[0]) {
-                  return member[0] + ', ';
+                if (member[1]) {
+                  return member[1] + ', ';
                 }
               }
             })}
