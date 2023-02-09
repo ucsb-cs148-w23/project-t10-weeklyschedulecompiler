@@ -87,7 +87,7 @@ const updateGroup = async (req, res) => {
     return res.status(400).json({ error: 'No such group' })
   }
 
-  group.groupMembers.push([user.name, email])
+  group.groupMembers.push([user.id, user.name, email])
   group.groupMembers = [...new Set(group.groupMembers)]
   group.save()
 
@@ -121,7 +121,7 @@ const updateGroupDeleteMember = async (req, res) => {
 
   //delete email of that person from groupMembers
   for (let i = 0; i < group.groupMembers.length; i++) {
-    if (group.groupMembers[i][1] === email) {
+    if (group.groupMembers[i][2] === email) {
       group.groupMembers.splice(i, 1)
     }
   }
