@@ -24,6 +24,7 @@ export default function GroupDetails({ user }) {
   const [show, setShow] = useState(false);
   const [events, setEvents] = useState(null);
   const [email, setDelete] = useState('');
+  const [del_user, setDelUser] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -133,6 +134,7 @@ export default function GroupDetails({ user }) {
                               onClick={() => {
                                 handleShow();
                                 setDelete(member[2]);
+                                setDelUser(member[1]);
                               }}
                             ></CloseButton>
                           )}
@@ -153,15 +155,15 @@ export default function GroupDetails({ user }) {
           </Container>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Remove Email</Modal.Title>
+              <Modal.Title>Remove {del_user}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to remove user</Modal.Body>
+            <Modal.Body>Are you sure you want to remove {del_user}?</Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
               <Button
-                variant="primary"
+                variant="danger"
                 onClick={() => {
                   handleClose();
                   handleDelete();
