@@ -22,8 +22,8 @@ export default function GroupDetails({ user }) {
   const [members, setMembers] = useState([]);
   const [edit, setEdit] = useState(false);
   const [show, setShow] = useState(false);
-  const [del_email, setDelete] = useState('');
   const [events, setEvents] = useState(null);
+  const [email, setDelete] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -67,10 +67,16 @@ export default function GroupDetails({ user }) {
     fetchEvents();
   }, [events]);
 
-  const handleDelete = (delEmail) => {
+  const handleDelete = () => {
+    const deleteEmail = { email };
+
     fetch(deleteUrl, {
       method: 'PATCH',
-      body: JSON.stringify([{ email: delEmail }]),
+      credentials: 'include',
+      body: JSON.stringify(deleteEmail),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         if (response.status === 200) {
