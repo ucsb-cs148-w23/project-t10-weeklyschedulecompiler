@@ -16,7 +16,6 @@ import EventCalendar from '../components/calender/EventCalendar';
 import { fetchGroupEvents } from '../lib/fetchEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
-let nextId = 0;
 
 export default function GroupDetails({ user }) {
   const navigate = useNavigate();
@@ -31,6 +30,7 @@ export default function GroupDetails({ user }) {
   const path = window.location.pathname;
   let groupId = path.substring(path.lastIndexOf('/'));
   let url = config.url + '/api/group' + groupId;
+  let deleteUrl = config.url + '/api/group/members' + groupId;
 
   useEffect(() => {
     async function fetchData() {
@@ -66,6 +66,22 @@ export default function GroupDetails({ user }) {
     fetchData();
     fetchEvents();
   }, [events]);
+
+  const handleDelete = (delEmail) => {
+    fetch(deleteUrl, {
+      method: 'PATCH',
+      body: JSON.stringify([{ email: delEmail }]),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        throw new Error('Failed to delete user');
+      })
+      .then((responseJson) => {
+        console.log(responseJson);
+      });
+  };
 
   return (
     <DefaultLayout
@@ -110,7 +126,7 @@ export default function GroupDetails({ user }) {
                             <CloseButton
                               onClick={() => {
                                 handleShow();
-                                setDelete(member);
+                                setDelete(member[2]);
                               }}
                             ></CloseButton>
                           )}
@@ -142,7 +158,7 @@ export default function GroupDetails({ user }) {
                 variant="primary"
                 onClick={() => {
                   handleClose();
-                  setMembers(members.filter((m) => m !== del_email));
+                  handleDelete();
                 }}
               >
                 Delete user
