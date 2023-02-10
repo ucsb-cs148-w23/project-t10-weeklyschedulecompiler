@@ -14,8 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
 
-import { fetchGroupEvents, updateGroupEvents } from '../lib/fetchEvents';
-
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
 export default function GroupDetails({ user }) {
@@ -29,13 +27,13 @@ export default function GroupDetails({ user }) {
   const [email, setDelete] = useState('');
   const [del_user, setDelUser] = useState('');
 
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const path = window.location.pathname;
   let groupId = path.substring(path.lastIndexOf('/'));
   let url = config.url + '/api/group' + groupId;
   let deleteUrl = config.url + '/api/group/members' + groupId;
+  let eventsUrl = config.url + '/api/group/events' + groupId;
 
   useEffect(() => {
     async function fetchData() {
@@ -64,21 +62,29 @@ export default function GroupDetails({ user }) {
       if (!exists) navigate('/groups');
       setMembers(groupResponseJson.groupMembers);
     }
-    async function updateEvents() {
-      const groupEvents = await updateGroupEvents(groupId);
+
+    async function getEvents() {
+      const receivedEvents = await fetch(eventsUrl, {
+        method: 'GET',
+      });
+      let groupEvents = await receivedEvents.json();
+
+      groupEvents = groupEvents.map((event, idx) => {
+        return {
+          id: idx,
+          text: event[3] + "'s Event",
+          start: event[1],
+          end: event[2],
+        };
+      });
+
       setEvents(groupEvents);
-      setUpdated(true);
+      setFetched(true);
+      console.log(groupEvents);
     }
-    async function fetchEvents() {
-      const groupEvents = await fetchGroupEvents(groupId);
-      setEvents(groupEvents);
-      setTimeout(() => {
-        setFetched(true);
-      }, 2000);
-    }
+
     fetchData();
-    if (!fetched) fetchEvents();
-    if (!updated) updateEvents();
+    if (!fetched) getEvents();
   }, [events]);
 
   const handleDelete = () => {
@@ -103,6 +109,27 @@ export default function GroupDetails({ user }) {
         window.location.reload(false);
       });
   };
+
+  async function updateEvents() {
+    const receivedEvents = await fetch(eventsUrl, {
+      method: 'PATCH',
+    });
+
+    let groupEvents = await receivedEvents.json();
+    console.log(groupEvents?.calendarEvents);
+
+    groupEvents = groupEvents?.calendarEvents.map((event, idx) => {
+      return {
+        id: idx,
+        text: event[3] + "'s Event",
+        start: event[1],
+        end: event[2],
+      };
+    });
+    console.log(groupEvents);
+
+    setEvents(groupEvents);
+  }
 
   return (
     <DefaultLayout
@@ -181,6 +208,7 @@ export default function GroupDetails({ user }) {
                 onClick={() => {
                   handleClose();
                   handleDelete();
+                  updateEvents();
                 }}
               >
                 Delete user
