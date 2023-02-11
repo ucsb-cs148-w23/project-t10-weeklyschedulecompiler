@@ -96,7 +96,7 @@ const updateGroup = async (req, res) => {
   group.groupMembers.push([user.googleId, user.name, email]);
   group.groupMembers = [...new Set(group.groupMembers)];
 
-  updateGroupEventsHelper(group.groupMembers);
+  group.calendarEvents = await updateGroupEventsHelper(group.groupMembers);
 
   group.save();
 
@@ -135,7 +135,7 @@ const updateGroupDeleteMember = async (req, res) => {
     }
   }
 
-  updateGroupEventsHelper(group.groupMembers);
+  group.calendarEvents = await updateGroupEventsHelper(group.groupMembers);
 
   group.save();
 
