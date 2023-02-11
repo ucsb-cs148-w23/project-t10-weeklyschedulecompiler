@@ -105,8 +105,7 @@ export default function GroupDetails({ user }) {
         throw new Error('Failed to delete user');
       })
       .then((responseJson) => {
-        console.log(responseJson);
-        window.location.reload(false);
+        setEvents(responseJson);
       });
   };
 
@@ -209,6 +208,9 @@ export default function GroupDetails({ user }) {
                   handleClose();
                   handleDelete();
                   updateEvents();
+                  setTimeout(() => {
+                    window.location.reload(false);
+                  }, 100);
                 }}
               >
                 Delete user

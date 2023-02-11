@@ -30,22 +30,23 @@ const createGroup = async (req, res) => {
 
   // add to the database
   try {
-    const group = await Group.create({
-      name: groupName,
-      groupMembers: [[googleId, username, email]],
-      calendarEvents: [],
-    });
-
     const user = await User.findOne({ email: email });
 
     if (!user) {
       return res.status(400).json({ error: 'No such user' });
     }
 
+    const group = await Group.create({
+      name: groupName,
+      groupMembers: [[googleId, username, email]],
+      calendarEvents: [],
+    });
+
     user.groupIds.push(group._id);
     user.save();
 
-    updateGroupEventsHelper(group.groupMembers);
+    group.calendarEvents = await updateGroupEventsHelper(group.groupMembers);
+    group.save();
 
     res.status(200).json(group);
   } catch (error) {
@@ -85,6 +86,7 @@ const updateGroup = async (req, res) => {
 
   user.groupIds.push(id);
   user.groupIds = [...new Set(user.groupIds)];
+  const userId = user.googleId;
   user.save();
 
   let group = await Group.findOne({ _id: id });
@@ -93,10 +95,23 @@ const updateGroup = async (req, res) => {
     return res.status(400).json({ error: 'No such group' });
   }
 
-  group.groupMembers.push([user.googleId, user.name, email]);
-  group.groupMembers = [...new Set(group.groupMembers)];
+  if (!group.groupMembers.some((member) => member[0] === userId)) {
+    group.calendarEvents = [
+      ...group.calendarEvents,
+      ...(await addGroupEventsHelper(userId)),
+    ];
+  }
 
-  group.calendarEvents = await updateGroupEventsHelper(group.groupMembers);
+  const uniqueValues = [];
+  group.groupMembers.push([user.googleId, user.name, email]);
+  group.groupMembers = group.groupMembers.filter((element) => {
+    if (uniqueValues.some((value) => value === element[0])) {
+      return false;
+    } else {
+      uniqueValues.push(element[0]);
+      return true;
+    }
+  });
 
   group.save();
 
@@ -112,6 +127,8 @@ const updateGroupDeleteMember = async (req, res) => {
   }
 
   let user = await User.findOne({ email: email });
+
+  const userId = user.googleId;
 
   if (!user) {
     return res.status(400).json({ error: 'No such user' });
@@ -135,11 +152,19 @@ const updateGroupDeleteMember = async (req, res) => {
     }
   }
 
-  group.calendarEvents = await updateGroupEventsHelper(group.groupMembers);
+  console.log(group.calendarEvents);
+
+  group.calendarEvents = group.calendarEvents.filter((event) => {
+    console.log(event[4]);
+    console.log(userId);
+    return event[4] !== userId;
+  });
+
+  console.log('after filter: ', group.calendarEvents);
 
   group.save();
 
-  res.status(200).json(group);
+  res.status(200).json(group.calendarEvents);
 };
 
 const getGroupEvents = async (req, res) => {
@@ -187,11 +212,63 @@ const updateGroupEvents = async (req, res) => {
   });
 };
 
+async function addGroupEventsHelper(memberGoogleId) {
+  let user = await User.findOne({ googleId: memberGoogleId });
+
+  const credentials = {
+    type: 'authorized_user',
+    client_id: config.googleClientID,
+    client_secret: config.googleClientSecret,
+    refresh_token: user.refreshToken,
+  };
+
+  auth = google.auth.fromJSON(credentials);
+
+  const calendar = google.calendar({ version: 'v3', auth });
+
+  const response = await calendar.events.list({
+    calendarId: 'primary',
+    timeMin: new Date().toISOString(),
+    maxResults: 10,
+    singleEvents: true,
+    orderBy: 'startTime',
+  });
+  const events = response.data.items;
+  if (!events || events.length === 0) {
+    console.log('No upcoming events found.');
+    return;
+  }
+  console.log('Upcoming 10 events:');
+  let userEvents = [];
+  events.map((event, i) => {
+    var options = { hour12: false };
+
+    const start = event.start.dateTime || event.start.date;
+    const end = event.end.dateTime;
+
+    if (!event.start.dateTime.includes('T')) {
+      return;
+    }
+
+    if (end)
+      userEvents.push([
+        event.summary,
+        start.substring(0, start.lastIndexOf('-')),
+        end.substring(0, end.lastIndexOf('-')),
+        user.name,
+        memberGoogleId,
+      ]);
+  });
+
+  console.log(userEvents);
+  user.events = userEvents;
+  user.save();
+  return userEvents;
+}
+
 async function updateGroupEventsHelper(groupMembers) {
   let allUserEvents = [];
-  console.log(groupMembers);
   for (const member of groupMembers) {
-    console.log(member);
     let user = await User.findOne({ googleId: member[0] });
 
     const credentials = {
@@ -235,6 +312,7 @@ async function updateGroupEventsHelper(groupMembers) {
           start.substring(0, start.lastIndexOf('-')),
           end.substring(0, end.lastIndexOf('-')),
           member[1],
+          member[0],
         ]);
     });
 
