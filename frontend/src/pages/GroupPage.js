@@ -20,6 +20,7 @@ const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
 export default function GroupDetails({ user }) {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [members, setMembers] = useState([]);
   const [edit, setEdit] = useState(false);
   const [show, setShow] = useState(false);
@@ -62,6 +63,7 @@ export default function GroupDetails({ user }) {
         }
       }
       if (!exists) navigate('/groups');
+      setName(groupResponseJson.name);
       setMembers(groupResponseJson.groupMembers);
     }
     async function updateEvents() {
@@ -107,7 +109,7 @@ export default function GroupDetails({ user }) {
   return (
     <DefaultLayout
       className={CLASSNAME}
-      header={'Group Details'}
+      header={`${name}`}
       component={
         <Button
           onClick={() => {
