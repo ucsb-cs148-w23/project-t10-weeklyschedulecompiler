@@ -234,6 +234,8 @@ async function addGroupEventsHelper(memberGoogleId) {
     orderBy: 'startTime',
   });
   const events = response.data.items;
+  console.log('events: ');
+  console.log(events);
   if (!events || events.length === 0) {
     console.log('No upcoming events found.');
     return;
@@ -246,7 +248,7 @@ async function addGroupEventsHelper(memberGoogleId) {
     const start = event.start.dateTime || event.start.date;
     const end = event.end.dateTime;
 
-    if (!event.start.dateTime.includes('T')) {
+    if (!start.includes('T')) {
       return;
     }
 
@@ -290,9 +292,11 @@ async function updateGroupEventsHelper(groupMembers) {
       orderBy: 'startTime',
     });
     const events = response.data.items;
+    console.log('events: ');
+    console.log(events);
     if (!events || events.length === 0) {
       console.log('No upcoming events found.');
-      return;
+      return [];
     }
     console.log('Upcoming 10 events:');
     let userEvents = [];
@@ -302,7 +306,7 @@ async function updateGroupEventsHelper(groupMembers) {
       const start = event.start.dateTime || event.start.date;
       const end = event.end.dateTime;
 
-      if (!event.start.dateTime.includes('T')) {
+      if (!start.includes('T')) {
         return;
       }
 
@@ -316,7 +320,6 @@ async function updateGroupEventsHelper(groupMembers) {
         ]);
     });
 
-    console.log(userEvents);
     const userEventsResponse = await User.findOneAndUpdate(
       { googleId: member[0] },
       {
