@@ -96,10 +96,10 @@ const updateGroup = async (req, res) => {
   }
 
   if (!group.groupMembers.some((member) => member[0] === userId)) {
-    group.calendarEvents = [
-      ...group.calendarEvents,
-      ...(await addGroupEventsHelper(userId)),
-    ];
+    const newMemberEvents = await addGroupEventsHelper(userId);
+    if (newMemberEvents) {
+      group.calendarEvents = [...group.calendarEvents, ...newMemberEvents];
+    }
   }
 
   const uniqueValues = [];
