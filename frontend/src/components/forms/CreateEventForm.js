@@ -4,20 +4,20 @@ import { Button } from 'react-bootstrap';
 export default function CreateEventForm() {
   return (
     <form>
-      <label style={{}}>Event Name:   
-      <input style={{marginLeft: '1%'}} type="text"/>
+      <label className="me-1" style={{paddingLeft: '15%'}}>Event Name:   
+      <input className="me-1" type="text"/>
       </label>
 
       <p></p>
 
-      <label style={{marginLeft: '1%'}}>Event Start Time:   
-      <input type="text"/>
+      <label className="me-1"  style={{paddingLeft: '15%'}}>Event Start Time:   
+      <input className="me-1" type="text"/>
       </label>
 
       <p></p>
 
-      <label style={{}}>Event End Time:   
-      <input style={{marginLeft: '1%'}} type="text"/>
+      <label className="me-1" style={{paddingLeft: '15%'}}>Event End Time:   
+      <input className="me-1"  type="text"/>
       </label>
 
     </form>
