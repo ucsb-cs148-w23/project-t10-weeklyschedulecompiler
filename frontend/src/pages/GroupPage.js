@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
+import { updateGroupMemberEvents } from '../lib/fetchEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -169,6 +170,21 @@ export default function GroupDetails({ user }) {
                           className="d-flex justify-content-end"
                           style={{ witdh: '100px' }}
                         >
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              position: 'absolute',
+                              right: '50px',
+                            }}
+                            onClick={() => {
+                              updateGroupMemberEvents(groupId, member[0]);
+                              setTimeout(() => {
+                                window.location.reload(false);
+                              }, 500);
+                            }}
+                          >
+                            Refresh
+                          </p>
                           {edit && (
                             <CloseButton
                               onClick={() => {
