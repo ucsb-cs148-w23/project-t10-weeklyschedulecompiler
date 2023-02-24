@@ -54,7 +54,6 @@ const createGroup = async (req, res) => {
   }
 };
 
-// Delete group and remove group from all members
 const deleteGroup = async (req, res) => {
   const { id } = req.params;
 
@@ -63,13 +62,6 @@ const deleteGroup = async (req, res) => {
   }
 
   const group = await Group.findOneAndDelete({ _id: id });
-
-  for (let i=0; i < group.groupMembers.length; i++) {
-    let user = await User.findOne({ email: group.groupMembers[i][2] });
-
-    user.groupIds.splice(user.groupIds.indexOf(id), 1);
-    user.save();
-  }
 
   if (!group) {
     return res.status(400).json({ error: 'No such group' });
@@ -263,31 +255,31 @@ const updateGroupMemberEvents = async (req, res) => {
     orderBy: 'startTime',
   });
   const events = response.data.items;
+  let userEvents = [];
   if (!events || events.length === 0) {
     console.log('No upcoming events found.');
-    return;
+  } else {
+    console.log('Upcoming 10 events:');
+    events.map((event, i) => {
+      var options = { hour12: false };
+
+      const start = event.start.dateTime || event.start.date;
+      const end = event.end.dateTime;
+
+      if (!start.includes('T')) {
+        return;
+      }
+
+      if (end)
+        userEvents.push([
+          event.summary,
+          start.substring(0, start.lastIndexOf('-')),
+          end.substring(0, end.lastIndexOf('-')),
+          user.name,
+          user.googleId,
+        ]);
+    });
   }
-  console.log('Upcoming 10 events:');
-  let userEvents = [];
-  events.map((event, i) => {
-    var options = { hour12: false };
-
-    const start = event.start.dateTime || event.start.date;
-    const end = event.end.dateTime;
-
-    if (!start.includes('T')) {
-      return;
-    }
-
-    if (end)
-      userEvents.push([
-        event.summary,
-        start.substring(0, start.lastIndexOf('-')),
-        end.substring(0, end.lastIndexOf('-')),
-        user.name,
-        user.googleId,
-      ]);
-  });
 
   user.events = userEvents;
   console.log(userEvents);
