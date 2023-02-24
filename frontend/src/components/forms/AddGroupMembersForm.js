@@ -5,7 +5,6 @@ import Alert from 'react-bootstrap/Alert'
 const AddGroupMembersForm = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,15 +21,10 @@ const AddGroupMembersForm = () => {
       },
     })
       .then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          setSuccess(true)
-          setError(false)
           return response.json();
         } else {
           setError(true)
-          setSuccess(false)
-          console.log('hi')
           throw new Error('failed to fetch events');
         }
       })
@@ -52,7 +46,7 @@ const AddGroupMembersForm = () => {
         'danger',
       ].map((message) => (
         <Alert key={message} variant={message}>
-          Add Member {message}!
+          Invalid Member Email!
         </Alert>
       )))}
     </form>
