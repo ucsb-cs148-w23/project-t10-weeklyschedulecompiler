@@ -109,9 +109,31 @@ async function getUserGroupsInfo(req, res) {
   res.status(200).json(groupInfo);
 }
 
+async function addUserEvent(req,res) {
+  // get user
+  const googleId = req.params.id;
+  const user = await User.findOne({ googleId: googleId });
+  const event = req.body.event;
+  const startTime = req.body.startTime;
+  const endTime = req.body.endTime;
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' });
+  }
+
+  // push new event to their events array
+  user.events.push([event, startTime, endTime]);
+  user.events = [...new Set(user.events)];
+  user.save();
+
+  res.status(200).json(user);
+
+}
+
 module.exports = {
   getUserEvents,
   updateUserEvents,
   getUserGroups,
   getUserGroupsInfo,
+  addUserEvent,
 };
