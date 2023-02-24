@@ -10,6 +10,7 @@ import Groups from '../../src/components/Group/Groups';
 import AppNavbar from '../../src/components/Nav/AppNavbar';
 import AuthButton from '../../src/components/Buttons/AuthButton';
 import { config } from '../../src/Constants';
+import MemberList from '../../src/components/Group/memberList';
 
 const navigate = jest.fn();
 
@@ -101,6 +102,12 @@ describe('User flow to log in and view their groups', () => {
 
   test("Check if the group's detail page renders the group members list", () => {
     const user = { authenticated: true };
-    render(<BrowserRouter></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <MemberList members={group2.groupMembers} />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByText('Luke Li')).toBeInTheDocument();
   });
 });
