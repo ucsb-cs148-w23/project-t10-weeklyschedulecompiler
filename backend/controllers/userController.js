@@ -113,7 +113,7 @@ async function addUserEvent(req,res) {
   // get user
   const googleId = req.params.id;
   const user = await User.findOne({ googleId: googleId });
-  const event = req.body.event;
+  const eventName = req.body.eventName;
   const startTime = req.body.startTime;
   const endTime = req.body.endTime;
 
@@ -122,11 +122,11 @@ async function addUserEvent(req,res) {
   }
 
   // push new event to their events array
-  user.events.push([event, startTime, endTime]);
+  user.events.push([eventName, startTime, endTime]);
   user.events = [...new Set(user.events)];
   user.save();
 
-  res.status(200).json(user);
+  res.status(200).json(events);
 
 }
 

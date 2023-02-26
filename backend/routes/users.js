@@ -18,6 +18,6 @@ router.get('/groups/:id', getUserGroups);
 
 router.get('/groupsinfo/:id', getUserGroupsInfo);
 
-router.patch('/events/:id', addUserEvent);
+router.patch('/events/', addUserEvent);
 
 module.exports = router;
