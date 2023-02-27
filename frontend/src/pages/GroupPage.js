@@ -15,6 +15,7 @@ import DeleteModal from '../components/Group/DeleteModal';
 import { deleteGroupMember } from '../lib/handleGroup';
 >>>>>>> 197a9b6 (dc - created frontend component of FreeTimeForm)
 import FreeTimeForm from '../components/forms/FreeTimeForm';
+import FreeTimeFormOnly from '../components/forms/FreeTimeFormOnly';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
