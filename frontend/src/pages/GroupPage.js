@@ -8,8 +8,12 @@ import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
 import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
+<<<<<<< HEAD
 import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
+=======
+import { deleteGroupMember } from '../lib/handleGroup';
+>>>>>>> 197a9b6 (dc - created frontend component of FreeTimeForm)
 import FreeTimeForm from '../components/forms/FreeTimeForm';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
@@ -125,7 +129,11 @@ export default function GroupDetails({ user }) {
                 style={{ paddingTop: '5%' }}
                 className="d-flex justify-content-center align-items-center mx-auto"
               >
+<<<<<<< HEAD
                 <FreeTimeForm events={events} setEvents={setEvents} />
+=======
+                <FreeTimeForm />
+>>>>>>> 197a9b6 (dc - created frontend component of FreeTimeForm)
               </Col>
             </Row>
           </Container>
