@@ -18,7 +18,7 @@ function InviteMenu() {
                 <Button variant="light" onClick={handleClick}>
                     Invites
                 </Button>
-                {click && <div className="dropdown">
+                {click && <div className="dropdown-open">
                     <InviteCard groupName="Group 1" />
                 </div>}
                 
