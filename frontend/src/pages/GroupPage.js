@@ -208,7 +208,7 @@ export default function GroupDetails({ user }) {
             >
               Add Event
             </Button>
-            <Col style={{paddingTop: '3%'}} className="d-flex justify-content-center align-items-center mx-auto">{add && <CreateEventForm></CreateEventForm>}</Col>
+            <Col style={{paddingTop: '3%'}} className="d-flex justify-content-center align-items-center mx-auto">{add && <CreateEventForm user= {user}></CreateEventForm>}</Col>
           </Col>
         </Col>
       </Row>

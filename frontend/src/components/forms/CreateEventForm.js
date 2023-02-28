@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { config } from '../../Constants';
 
 
-export default function CreateEventForm() {
+export default function CreateEventForm({user}) {
   const navigate = useNavigate();
   const [event, setEvent] = useState('')
   const [startTime, setStartTime] = useState('')
@@ -14,8 +14,7 @@ export default function CreateEventForm() {
   const createEvent = (e) => {
     e.preventDefault()
     const body = { eventName: event, startTime: startTime, endTime: endTime }
-    const path = window.location.pathname;
-    let url = config.url + '/api/group' + path.substring(path.lastIndexOf('/'));
+    let url = config.url + '/api/user' + user.user.googleId 
 
     fetch(url, {
       method: 'PATCH',
@@ -27,9 +26,10 @@ export default function CreateEventForm() {
       if (response.status === 200) {
         return response.json();
       }
-      throw new Error('failed to create group');
+      throw new Error('failed to create event');
     }).then((responseJson) => {
-      navigate('/groups/'+responseJson._id)
+      console.log(responseJson)
+      window.location.reload(false);
     })
   }
 
