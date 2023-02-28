@@ -27,7 +27,12 @@
     border-radius: 15px;
 
     top: 12px;
-    left: 62px;
+    left: 72px;
     width: 15px;
     height: 15px;
+}
+
+.arrow {
+    display: inline;
+    font-size: 10px;
 }
