@@ -3,6 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 
 export default function DeleteModal(props) {
   const email = props.email;
+  const propUser = props.propUser;
   return (
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Header closeButton>
@@ -17,7 +18,7 @@ export default function DeleteModal(props) {
           variant="danger"
           onClick={async () => {
             props.handleClose();
-            deleteGroupMember(props.deleteUrl, { email, userId: props.user });
+            deleteGroupMember(props.deleteUrl, { email, userId: propUser });
             setTimeout(() => {
               window.location.reload(false);
             }, 100);

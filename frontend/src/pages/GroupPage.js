@@ -9,7 +9,9 @@ import EventCalendar from '../components/calender/EventCalendar';
 import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
 import MemberList from '../components/Group/MemberList';
-import DeleteModal from '../components/Group/Modal';
+import DeleteModal from '../components/Group/DeleteModal';
+import { deleteGroupMember } from '../lib/handleGroup';
+import { Modal } from 'react-bootstrap';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -118,14 +120,29 @@ export default function GroupDetails({ user }) {
               <Col></Col>
             </Row>
           </Container>
-          <DeleteModal
-            show={show}
-            handleClose={handleClose}
-            del_user={del_user}
-            deleteUrl={deleteUrl}
-            email={email}
-            user={user.user.id}
-          ></DeleteModal>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Remove {del_user}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Are you sure you want to remove {del_user}?</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button
+                variant="danger"
+                onClick={async () => {
+                  handleClose();
+                  deleteGroupMember(deleteUrl, { email, userId: user.user.id });
+                  setTimeout(() => {
+                    window.location.reload(false);
+                  }, 100);
+                }}
+              >
+                Delete user
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Col>
       </Row>
     </DefaultLayout>
