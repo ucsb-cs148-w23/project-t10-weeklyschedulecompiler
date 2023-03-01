@@ -38,8 +38,11 @@ export default function MemberList(props) {
                 <CloseButton
                   onClick={() => {
                     props.handleShow();
-                    props.setDelete(member[2]);
-                    props.setDelUser(member[1]);
+                    props.setDelUser({
+                      name: member[1],
+                      email: member[2],
+                      id: member[0],
+                    });
                   }}
                 ></CloseButton>
               )}

@@ -8,7 +8,7 @@ import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
 import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
-import MemberList from '../components/Group/MemberList';
+import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
 import { deleteGroupMember } from '../lib/handleGroup';
 import { Modal } from 'react-bootstrap';
@@ -23,7 +23,6 @@ export default function GroupDetails({ user }) {
   const [show, setShow] = useState(false);
   const [events, setEvents] = useState(null);
   const [fetched, setFetched] = useState(false);
-  const [email, setDelete] = useState('');
   const [del_user, setDelUser] = useState('');
   const [admin, setAdmin] = useState('');
 
@@ -40,10 +39,14 @@ export default function GroupDetails({ user }) {
       const user = await checkUser();
       if (!user.authenticated) navigate('/');
       const groupInfo = await checkGroup(url, user);
+
       if (!groupInfo?.exists) navigate('/groups');
       setName(groupInfo.group.name);
       setMembers(groupInfo.group.groupMembers);
-      setAdmin(groupInfo.group.admin === user.user.id);
+      setAdmin({
+        id: groupInfo.group.admin,
+        isAdmin: groupInfo.group.admin === user.user.id,
+      });
     }
     fetchData();
 
@@ -65,7 +68,7 @@ export default function GroupDetails({ user }) {
         </Col>
 
         <Col>
-          {admin && (
+          {admin.isAdmin && (
             <Button
               className="d-flex justify-content-center align-items-center mx-auto"
               style={{ marginBottom: '5%' }}
@@ -85,12 +88,9 @@ export default function GroupDetails({ user }) {
                 <MemberList
                   members={members}
                   groupId={groupId}
-                  admin={admin}
+                  admin={admin.isAdmin}
                   edit={edit}
-                  email={email}
-                  del_user={del_user}
                   handleShow={handleShow}
-                  setDelete={setDelete}
                   setDelUser={setDelUser}
                 ></MemberList>
               </Col>
@@ -98,7 +98,7 @@ export default function GroupDetails({ user }) {
             <Row>
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
-                {admin && edit && (
+                {admin.isAdmin && edit && (
                   <AddGroupMembersForm user={user}></AddGroupMembersForm>
                 )}
               </Col>
@@ -110,7 +110,7 @@ export default function GroupDetails({ user }) {
                 style={{ paddingTop: '5%' }}
                 className="d-flex justify-content-center align-items-center mx-auto"
               >
-                {admin && edit && (
+                {admin.isAdmin && edit && (
                   <DeleteGroupButton
                     groupId={groupId}
                     userId={user.user.id}
@@ -120,29 +120,16 @@ export default function GroupDetails({ user }) {
               <Col></Col>
             </Row>
           </Container>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Remove {del_user}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Are you sure you want to remove {del_user}?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button
-                variant="danger"
-                onClick={async () => {
-                  handleClose();
-                  deleteGroupMember(deleteUrl, { email, userId: user.user.id });
-                  setTimeout(() => {
-                    window.location.reload(false);
-                  }, 100);
-                }}
-              >
-                Delete user
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <DeleteModal
+            show={show}
+            email={del_user.email}
+            propUser={user}
+            admin={admin}
+            id={del_user.id}
+            handleClose={handleClose}
+            name={del_user.name}
+            deleteUrl={deleteUrl}
+          ></DeleteModal>
         </Col>
       </Row>
     </DefaultLayout>
