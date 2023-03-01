@@ -1,26 +1,15 @@
 import DefaultLayout from '../layouts/DefaultLayout';
-import {
-  Button,
-  Container,
-  CloseButton,
-  Modal,
-  ListGroup,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
 import DeleteGroupButton from '../components/Buttons/DeleteGroupButton';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
-import {
-  checkGroup,
-  fetchGroupEvents,
-  updateGroupMemberEvents,
-} from '../lib/fetchEvents';
+import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
-import { deleteGroupMember } from '../lib/handleGroup';
+import MemberList from '../components/Group/MemberList';
+import DeleteModal from '../components/Group/Modal';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -91,49 +80,17 @@ export default function GroupDetails({ user }) {
                 xs={4}
                 className="d-flex justify-content-center align-items-center mx-auto"
               >
-                <ListGroup>
-                  {members.map((member) => (
-                    <ListGroup.Item
-                      className="overflow-auto d-flex align-items-center"
-                      style={{ width: '350px', height: '35px' }}
-                    >
-                      <Row className="d-flex">
-                        <Col className="me-3" style={{ width: '275px' }}>
-                          {member[1]}{' '}
-                        </Col>
-                        <Col
-                          className="d-flex justify-content-end"
-                          style={{ witdh: '100px' }}
-                        >
-                          <p
-                            style={{
-                              cursor: 'pointer',
-                              position: 'absolute',
-                              right: '50px',
-                            }}
-                            onClick={() => {
-                              updateGroupMemberEvents(groupId, member[0]);
-                              setTimeout(() => {
-                                window.location.reload(false);
-                              }, 1000);
-                            }}
-                          >
-                            Refresh
-                          </p>
-                          {admin && edit && (
-                            <CloseButton
-                              onClick={() => {
-                                handleShow();
-                                setDelete(member[2]);
-                                setDelUser(member[1]);
-                              }}
-                            ></CloseButton>
-                          )}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
+                <MemberList
+                  members={members}
+                  groupId={groupId}
+                  admin={admin}
+                  edit={edit}
+                  email={email}
+                  del_user={del_user}
+                  handleShow={handleShow}
+                  setDelete={setDelete}
+                  setDelUser={setDelUser}
+                ></MemberList>
               </Col>
             </Row>
             <Row>
@@ -161,29 +118,14 @@ export default function GroupDetails({ user }) {
               <Col></Col>
             </Row>
           </Container>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Remove {del_user}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Are you sure you want to remove {del_user}?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button
-                variant="danger"
-                onClick={async () => {
-                  handleClose();
-                  deleteGroupMember(deleteUrl, { email, userId: user.user.id });
-                  setTimeout(() => {
-                    window.location.reload(false);
-                  }, 100);
-                }}
-              >
-                Delete user
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <DeleteModal
+            show={show}
+            handleClose={handleClose}
+            del_user={del_user}
+            deleteUrl={deleteUrl}
+            email={email}
+            user={user.user.id}
+          ></DeleteModal>
         </Col>
       </Row>
     </DefaultLayout>

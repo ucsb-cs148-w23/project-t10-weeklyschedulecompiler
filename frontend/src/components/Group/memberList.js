@@ -4,7 +4,6 @@ import React from 'react';
 
 export default function MemberList(props) {
   const members = props.members;
-  console.log(members);
   return (
     <ListGroup>
       {members.map((member) => (
@@ -15,6 +14,35 @@ export default function MemberList(props) {
           <Row className="d-flex">
             <Col className="me-3" style={{ width: '275px' }}>
               {member[1]}{' '}
+            </Col>
+            <Col
+              className="d-flex justify-content-end"
+              style={{ witdh: '100px' }}
+            >
+              <p
+                style={{
+                  cursor: 'pointer',
+                  position: 'absolute',
+                  right: '50px',
+                }}
+                onClick={() => {
+                  updateGroupMemberEvents(props.groupId, member[0]);
+                  setTimeout(() => {
+                    window.location.reload(false);
+                  }, 1000);
+                }}
+              >
+                Refresh
+              </p>
+              {props.admin && props.edit && (
+                <CloseButton
+                  onClick={() => {
+                    props.handleShow();
+                    props.setDelete(member[2]);
+                    props.setDelUser(member[1]);
+                  }}
+                ></CloseButton>
+              )}
             </Col>
           </Row>
         </ListGroup.Item>
