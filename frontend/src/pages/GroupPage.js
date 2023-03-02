@@ -10,8 +10,7 @@ import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
 import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
-import { deleteGroupMember } from '../lib/handleGroup';
-import { Modal } from 'react-bootstrap';
+import HideEvents from '../components/Buttons/HideEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -105,7 +104,9 @@ export default function GroupDetails({ user }) {
               <Col></Col>
             </Row>
             <Row>
-              <Col></Col>
+              <Col>
+                <HideEvents events={events}></HideEvents>
+              </Col>
               <Col
                 style={{ paddingTop: '5%' }}
                 className="d-flex justify-content-center align-items-center mx-auto"

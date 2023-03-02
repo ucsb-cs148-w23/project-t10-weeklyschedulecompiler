@@ -109,11 +109,11 @@ const updateGroup = async (req, res) => {
     { $addToSet: { groupIds: id } },
     { new: true }
   );
-  
+
   if (!user) {
     return res.status(400).json({ error: 'No such user' });
   }
-  
+
   const userId = user.googleId;
 
   if (!group) {
@@ -449,6 +449,34 @@ async function updateGroupEventsHelper(groupMembers) {
 
   return allUserEvents;
 }
+const hideGroupMemberEvents = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.body.id;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'No such group' });
+  }
+
+  let user = await User.findOne({ googleId: userId });
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' });
+  }
+
+  let group = await Group.findOne({ _id: id });
+
+  if (!group) {
+    return res.status(400).json({ error: 'No such group' });
+  }
+
+  group.calendarEvents = group.calendarEvents.filter((event) => {
+    return event[4] !== userId;
+  });
+
+  group.save();
+
+  res.status(200).json(group.calendarEvents);
+};
 
 module.exports = {
   getGroup,
@@ -459,4 +487,5 @@ module.exports = {
   getGroupEvents,
   updateGroupEvents,
   updateGroupMemberEvents,
+  hideGroupMemberEvents,
 };
