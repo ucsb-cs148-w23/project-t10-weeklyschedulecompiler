@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -32,3 +33,30 @@ export default function DeleteGroupButton({ groupId }) {
         </>
     )
 }
+=======
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+import { config } from '../../Constants';
+import { deleteGroup } from '../../lib/handleGroup';
+
+export default function DeleteGroupButton({ groupId, userId }) {
+  let url = config.url + '/api/group' + groupId;
+  const navigate = useNavigate();
+
+  // Calls Delete Group API and redirects to groups page
+  async function handleDeleteGroup() {
+    const response = await deleteGroup(url, { userId });
+    if (response?.success) {
+      navigate('/groups');
+    }
+  }
+
+  return (
+    <>
+      <Button onClick={handleDeleteGroup}>Delete Group</Button>
+    </>
+  );
+}
+>>>>>>> 85567808e3ccec01733f37f44ce9a64d4b45f3ef

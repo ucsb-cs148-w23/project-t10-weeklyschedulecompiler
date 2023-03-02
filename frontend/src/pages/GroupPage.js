@@ -9,11 +9,18 @@ import {
   Col,
 } from 'react-bootstrap';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
+import DeleteGroupButton from '../components/Buttons/DeleteGroupButton';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
-import { updateGroupMemberEvents } from '../lib/fetchEvents';
+import {
+  checkGroup,
+  fetchGroupEvents,
+  updateGroupMemberEvents,
+} from '../lib/fetchEvents';
+import { checkUser } from '../lib/fetchUser';
+import { deleteGroupMember } from '../lib/handleGroup';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -24,10 +31,10 @@ export default function GroupDetails({ user }) {
   const [edit, setEdit] = useState(false);
   const [show, setShow] = useState(false);
   const [events, setEvents] = useState(null);
-  const [updated, setUpdated] = useState(false);
   const [fetched, setFetched] = useState(false);
   const [email, setDelete] = useState('');
   const [del_user, setDelUser] = useState('');
+  const [admin, setAdmin] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -39,118 +46,45 @@ export default function GroupDetails({ user }) {
 
   useEffect(() => {
     async function fetchData() {
-      const check = await fetch(config.url + '/check', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Credentials': true,
-        },
-      });
-      const checkUser = await check.json();
-      if (!checkUser.authenticated) navigate('/');
-      const groupResponse = await fetch(url, {
-        method: 'GET',
-      });
-      const groupResponseJson = await groupResponse.json();
-      let exists = false;
-      for (const member of groupResponseJson.groupMembers) {
-        if (member[0] === checkUser.user.id) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) navigate('/groups');
-      setName(groupResponseJson.name);
-      setMembers(groupResponseJson.groupMembers);
+      const user = await checkUser();
+      if (!user.authenticated) navigate('/');
+      const groupInfo = await checkGroup(url, user);
+      if (!groupInfo?.exists) navigate('/groups');
+      setName(groupInfo.group.name);
+      setMembers(groupInfo.group.groupMembers);
+      setAdmin(groupInfo.group.admin === user.user.id);
     }
+    fetchData();
 
     async function getEvents() {
-      const receivedEvents = await fetch(eventsUrl, {
-        method: 'GET',
-      });
-      let groupEvents = await receivedEvents.json();
-
-      groupEvents = groupEvents.map((event, idx) => {
-        return {
-          id: idx,
-          text: event[3] + "'s Event",
-          start: event[1],
-          end: event[2],
-        };
-      });
-
+      const groupEvents = await fetchGroupEvents(eventsUrl);
       setEvents(groupEvents);
       setFetched(true);
-      console.log(groupEvents);
     }
 
     fetchData();
     if (!fetched) getEvents();
   }, [events]);
 
-  const handleDelete = () => {
-    const deleteEmail = { email };
-
-    fetch(deleteUrl, {
-      method: 'PATCH',
-      credentials: 'include',
-      body: JSON.stringify(deleteEmail),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        throw new Error('Failed to delete user');
-      })
-      .then((responseJson) => {
-        setEvents(responseJson);
-      });
-  };
-
-  async function updateEvents() {
-    const receivedEvents = await fetch(eventsUrl, {
-      method: 'PATCH',
-    });
-
-    let groupEvents = await receivedEvents.json();
-    console.log(groupEvents?.calendarEvents);
-
-    groupEvents = groupEvents?.calendarEvents.map((event, idx) => {
-      return {
-        id: idx,
-        text: event[3] + "'s Event",
-        start: event[1],
-        end: event[2],
-      };
-    });
-    console.log(groupEvents);
-
-    setEvents(groupEvents);
-  }
-
   return (
-    <DefaultLayout
-      className={CLASSNAME}
-      header={`${name}`}
-    >
+    <DefaultLayout className={CLASSNAME} header={`${name}`}>
       <Row>
         <Col xs={8}>
           <EventCalendar events={events} groups={true} />
         </Col>
-        
+
         <Col>
-          <Button className="d-flex justify-content-center align-items-center mx-auto" style={{marginBottom: "5%"}}
-            onClick={() => {
-              setEdit((prevEdit) => !prevEdit);
-            }}
+          {admin && (
+            <Button
+              className="d-flex justify-content-center align-items-center mx-auto"
+              style={{ marginBottom: '5%' }}
+              onClick={() => {
+                setEdit((prevEdit) => !prevEdit);
+              }}
             >
-            Edit
-          </Button>
+              Edit
+            </Button>
+          )}
           <Container fluid>
             <Row className="mb-3 d-flex justify-content-center align-items-center">
               <Col
@@ -181,12 +115,12 @@ export default function GroupDetails({ user }) {
                               updateGroupMemberEvents(groupId, member[0]);
                               setTimeout(() => {
                                 window.location.reload(false);
-                              }, 500);
+                              }, 1000);
                             }}
                           >
                             Refresh
                           </p>
-                          {edit && (
+                          {admin && edit && (
                             <CloseButton
                               onClick={() => {
                                 handleShow();
@@ -206,7 +140,24 @@ export default function GroupDetails({ user }) {
               
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
-                {edit && <AddGroupMembersForm></AddGroupMembersForm>}
+                {admin && edit && (
+                  <AddGroupMembersForm user={user}></AddGroupMembersForm>
+                )}
+              </Col>
+              <Col></Col>
+            </Row>
+            <Row>
+              <Col></Col>
+              <Col
+                style={{ paddingTop: '5%' }}
+                className="d-flex justify-content-center align-items-center mx-auto"
+              >
+                {admin && edit && (
+                  <DeleteGroupButton
+                    groupId={groupId}
+                    userId={user.user.id}
+                  ></DeleteGroupButton>
+                )}
               </Col>
               <Col></Col>
             </Row>
@@ -222,10 +173,9 @@ export default function GroupDetails({ user }) {
               </Button>
               <Button
                 variant="danger"
-                onClick={() => {
+                onClick={async () => {
                   handleClose();
-                  handleDelete();
-                  updateEvents();
+                  deleteGroupMember(deleteUrl, { email, userId: user.user.id });
                   setTimeout(() => {
                     window.location.reload(false);
                   }, 100);
