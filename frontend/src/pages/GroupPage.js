@@ -11,6 +11,7 @@ import { checkUser } from '../lib/fetchUser';
 import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
 import FreeTimeForm from '../components/forms/FreeTimeForm';
+import HideEvents from '../components/Buttons/HideEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 

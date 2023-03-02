@@ -615,4 +615,5 @@ module.exports = {
   updateGroupMemberEvents,
   hideGroupMemberEvents,
   getFreeTime,
+  hideGroupMemberEvents,
 };
