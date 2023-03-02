@@ -8,7 +8,11 @@ const {
   getGroupEvents,
   updateGroupEvents,
   updateGroupMemberEvents,
+<<<<<<< HEAD
   hideGroupMemberEvents,
+=======
+  getFreeTime,
+>>>>>>> 0d0fa5a (dc - should work for only PST)
 } = require('../controllers/groupController');
 
 // GET a single group
@@ -37,5 +41,8 @@ router.patch('/events/member/:id', updateGroupMemberEvents);
 
 //UPDATE a group's events to hide a certain member
 router.patch('/events/member/hide/:id', hideGroupMemberEvents);
+
+//GET a group's free time
+router.patch('/free/:id', getFreeTime);
 
 module.exports = router;
