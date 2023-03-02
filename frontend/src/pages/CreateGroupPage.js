@@ -25,7 +25,7 @@ const CreateGroupPage = ({ user }) => {
 
   return (
     <DefaultLayout header={'Create a Group'}>
-        <CreateGroupForm user={user}></CreateGroupForm>
+      <CreateGroupForm user={user}></CreateGroupForm>
     </DefaultLayout>
 );
 };

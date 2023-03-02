@@ -13,13 +13,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
-
-import { fetchGroupEvents, updateGroupEvents } from '../lib/fetchEvents';
+import { updateGroupMemberEvents } from '../lib/fetchEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
 export default function GroupDetails({ user }) {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [members, setMembers] = useState([]);
   const [edit, setEdit] = useState(false);
   const [show, setShow] = useState(false);
@@ -29,13 +29,13 @@ export default function GroupDetails({ user }) {
   const [email, setDelete] = useState('');
   const [del_user, setDelUser] = useState('');
 
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const path = window.location.pathname;
   let groupId = path.substring(path.lastIndexOf('/'));
   let url = config.url + '/api/group' + groupId;
   let deleteUrl = config.url + '/api/group/members' + groupId;
+  let eventsUrl = config.url + '/api/group/events' + groupId;
 
   useEffect(() => {
     async function fetchData() {
@@ -62,23 +62,32 @@ export default function GroupDetails({ user }) {
         }
       }
       if (!exists) navigate('/groups');
+      setName(groupResponseJson.name);
       setMembers(groupResponseJson.groupMembers);
     }
-    async function updateEvents() {
-      const groupEvents = await updateGroupEvents(groupId);
+
+    async function getEvents() {
+      const receivedEvents = await fetch(eventsUrl, {
+        method: 'GET',
+      });
+      let groupEvents = await receivedEvents.json();
+
+      groupEvents = groupEvents.map((event, idx) => {
+        return {
+          id: idx,
+          text: event[3] + "'s Event",
+          start: event[1],
+          end: event[2],
+        };
+      });
+
       setEvents(groupEvents);
-      setUpdated(true);
+      setFetched(true);
+      console.log(groupEvents);
     }
-    async function fetchEvents() {
-      const groupEvents = await fetchGroupEvents(groupId);
-      setEvents(groupEvents);
-      setTimeout(() => {
-        setFetched(true);
-      }, 2000);
-    }
+
     fetchData();
-    if (!fetched) fetchEvents();
-    if (!updated) updateEvents();
+    if (!fetched) getEvents();
   }, [events]);
 
   const handleDelete = () => {
@@ -99,30 +108,49 @@ export default function GroupDetails({ user }) {
         throw new Error('Failed to delete user');
       })
       .then((responseJson) => {
-        console.log(responseJson);
-        window.location.reload(false);
+        setEvents(responseJson);
       });
   };
+
+  async function updateEvents() {
+    const receivedEvents = await fetch(eventsUrl, {
+      method: 'PATCH',
+    });
+
+    let groupEvents = await receivedEvents.json();
+    console.log(groupEvents?.calendarEvents);
+
+    groupEvents = groupEvents?.calendarEvents.map((event, idx) => {
+      return {
+        id: idx,
+        text: event[3] + "'s Event",
+        start: event[1],
+        end: event[2],
+      };
+    });
+    console.log(groupEvents);
+
+    setEvents(groupEvents);
+  }
 
   return (
     <DefaultLayout
       className={CLASSNAME}
-      header={'Group Details'}
-      component={
-        <Button
-          onClick={() => {
-            setEdit((prevEdit) => !prevEdit);
-          }}
-        >
-          Edit
-        </Button>
-      }
+      header={`${name}`}
     >
       <Row>
         <Col xs={8}>
           <EventCalendar events={events} groups={true} />
         </Col>
+        
         <Col>
+          <Button className="d-flex justify-content-center align-items-center mx-auto" style={{marginBottom: "5%"}}
+            onClick={() => {
+              setEdit((prevEdit) => !prevEdit);
+            }}
+            >
+            Edit
+          </Button>
           <Container fluid>
             <Row className="mb-3 d-flex justify-content-center align-items-center">
               <Col
@@ -143,6 +171,21 @@ export default function GroupDetails({ user }) {
                           className="d-flex justify-content-end"
                           style={{ witdh: '100px' }}
                         >
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              position: 'absolute',
+                              right: '50px',
+                            }}
+                            onClick={() => {
+                              updateGroupMemberEvents(groupId, member[0]);
+                              setTimeout(() => {
+                                window.location.reload(false);
+                              }, 500);
+                            }}
+                          >
+                            Refresh
+                          </p>
                           {edit && (
                             <CloseButton
                               onClick={() => {
@@ -160,6 +203,7 @@ export default function GroupDetails({ user }) {
               </Col>
             </Row>
             <Row>
+              
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
                 {edit && <AddGroupMembersForm></AddGroupMembersForm>}
@@ -181,6 +225,10 @@ export default function GroupDetails({ user }) {
                 onClick={() => {
                   handleClose();
                   handleDelete();
+                  updateEvents();
+                  setTimeout(() => {
+                    window.location.reload(false);
+                  }, 100);
                 }}
               >
                 Delete user

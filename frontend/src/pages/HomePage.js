@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import EventCalendar from '../components/calender/EventCalendar';
 import { config } from '../Constants';
+import DefaultLayout from "../layouts/DefaultLayout"
 
 export default function HomePage({ user }) {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ export default function HomePage({ user }) {
   });
 
   return (
-    <Container>
+    <DefaultLayout>
       <EventCalendar groups={false} user={user} />
-    </Container>
+    </DefaultLayout>
   );
 }

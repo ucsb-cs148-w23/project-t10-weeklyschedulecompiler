@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import CreateGroupButton from '../components/Buttons/CreateGroupButton';
 import UpdateUserEventsButton from '../components/Buttons/UpdateUserEventsButton';
 import Groups from '../components/Group/Groups';
-import DefaultLayout from '../layouts/DefaultLayout';
+import GroupsPageLayout from '../layouts/GroupsPageLayout';
 import { config } from '../Constants';
+import '../style/GroupsPage.css'
 
 export default function GroupsPage({ user }) {
   const navigate = useNavigate();
@@ -66,7 +67,8 @@ export default function GroupsPage({ user }) {
   });
 
   return (
-    <DefaultLayout header={'Groups'} component={<CreateGroupButton />}>
+    <div className='background'>
+    <GroupsPageLayout header={'Groups'} component={<CreateGroupButton />}>
       <Groups groups={groups} />
       {/* <UpdateUserEventsButton user={user} handler={updateEvents} /> */}
       {events.map((event, i) => {
@@ -79,6 +81,7 @@ export default function GroupsPage({ user }) {
           </div>
         );
       })}
-    </DefaultLayout>
+    </GroupsPageLayout>
+    </div>
   );
 }
