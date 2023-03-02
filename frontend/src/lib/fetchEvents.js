@@ -79,21 +79,6 @@ export async function updateGroupMemberEvents(groupId, userId) {
   return events;
 }
 
-export async function hideGroupMemberEvents(groupId, userId) {
-  const response = await fetch(
-    config.url + '/api/group/events/member/hide' + groupId,
-    {
-      method: 'PATCH',
-      body: JSON.stringify({ id: userId }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  const { events } = await response.json();
-  return events;
-}
-
 export async function getFreeTime(groupId, range) {
   const response = await fetch(config.url + '/api/group/free' + groupId, {
     method: 'PATCH',
@@ -103,7 +88,6 @@ export async function getFreeTime(groupId, range) {
     },
   });
   const events = await response.json();
-
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const freeTimes = events.map((event) => {
@@ -111,27 +95,12 @@ export async function getFreeTime(groupId, range) {
     const end = new Date(event.end);
 
     return {
-      text: event.text,
+      ...event,
       start: start.toLocaleString('en-US', { timeZone: timezone }),
       end: end.toLocaleString('en-US', { timeZone: timezone }),
     };
   });
 
-  // console.log(freeTimes);
-  return freeTimes;
-}
-
-export async function hideGroupMemberEvents(groupId, userId) {
-  const response = await fetch(
-    config.url + '/api/group/events/member/hide' + groupId,
-    {
-      method: 'PATCH',
-      body: JSON.stringify({ id: userId }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  const { events } = await response.json();
-  return events;
+  console.log(freeTimes);
+  // return freeTimes;
 }
