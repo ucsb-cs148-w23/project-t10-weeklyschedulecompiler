@@ -49,8 +49,8 @@ async function updateUserEvents(req, res) {
 
     const start = event.start.dateTime || event.start.date;
     const end = event.end.dateTime;
-    
-    if (!event.start.dateTime.includes('T')) {
+
+    if (!start.includes('T')) {
       return;
     }
 
@@ -62,9 +62,9 @@ async function updateUserEvents(req, res) {
       ]);
   });
   
-  userEvents = [].concat(userEvents, user.localEvents);
-
+  userEvents = userEvents.concat(user.localEvents);
   console.log(userEvents);
+
   const userEventsResponse = await User.findOneAndUpdate(
     { googleId: req.body.id },
     {

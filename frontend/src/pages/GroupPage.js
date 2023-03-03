@@ -1,22 +1,17 @@
 import DefaultLayout from '../layouts/DefaultLayout';
-import {
-  Button,
-  Container,
-  CloseButton,
-  Modal,
-  ListGroup,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
-import CreateEventForm from '../components/forms/CreateEventForm';
 import DeleteGroupButton from '../components/Buttons/DeleteGroupButton';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../Constants';
 import EventCalendar from '../components/calender/EventCalendar';
-
-import { fetchGroupEvents, updateGroupEvents } from '../lib/fetchEvents';
+import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
+import { checkUser } from '../lib/fetchUser';
+import MemberList from '../components/Group/memberList';
+import DeleteModal from '../components/Group/DeleteModal';
+import FreeTimeForm from '../components/forms/FreeTimeForm';
+import CreateEventForm from '../components/forms/CreateEventForm.js';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -27,11 +22,10 @@ export default function GroupDetails({ user }) {
   const [edit, setEdit] = useState(false);
   const [show, setShow] = useState(false);
   const [events, setEvents] = useState(null);
-  const [updated, setUpdated] = useState(false);
   const [fetched, setFetched] = useState(false);
-  const [email, setDelete] = useState('');
   const [del_user, setDelUser] = useState('');
-
+  const [admin, setAdmin] = useState('');
+  const [hideId, setHideId] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -39,172 +33,120 @@ export default function GroupDetails({ user }) {
   let groupId = path.substring(path.lastIndexOf('/'));
   let url = config.url + '/api/group' + groupId;
   let deleteUrl = config.url + '/api/group/members' + groupId;
+  let eventsUrl = config.url + '/api/group/events' + groupId;
 
   useEffect(() => {
     async function fetchData() {
-      const check = await fetch(config.url + '/check', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Credentials': true,
-        },
+      const user = await checkUser();
+      if (!user.authenticated) navigate('/');
+      const groupInfo = await checkGroup(url, user);
+
+      if (!groupInfo?.exists) navigate('/groups');
+      setName(groupInfo.group.name);
+      setMembers(groupInfo.group.groupMembers);
+      setAdmin({
+        id: groupInfo.group.admin,
+        isAdmin: groupInfo.group.admin === user.user.id,
       });
-      const checkUser = await check.json();
-      if (!checkUser.authenticated) navigate('/');
-      const groupResponse = await fetch(url, {
-        method: 'GET',
-      });
-      const groupResponseJson = await groupResponse.json();
-      let exists = false;
-      for (const member of groupResponseJson.groupMembers) {
-        if (member[0] === checkUser.user.id) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) navigate('/groups');
-      setName(groupResponseJson.name);
-      setMembers(groupResponseJson.groupMembers);
-    }
-    
-    async function updateEvents() {
-      const groupEvents = await updateGroupEvents(groupId);
-      setEvents(groupEvents);
-      setUpdated(true);
-    }
-    async function fetchEvents() {
-      const groupEvents = await fetchGroupEvents(groupId);
-      setEvents(groupEvents);
-      setTimeout(() => {
-        setFetched(true);
-      }, 2000);
     }
     fetchData();
-    if (!fetched) fetchEvents();
-    if (!updated) updateEvents();
+
+    async function getEvents() {
+      let newHideId = JSON.parse(sessionStorage.getItem('hideId'));
+      {
+        newHideId ? setHideId(newHideId) : setHideId([]);
+      }
+      const groupEvents = await fetchGroupEvents(eventsUrl, newHideId);
+      setEvents(groupEvents);
+      setFetched(true);
+    }
+    fetchData();
+    if (!fetched) getEvents();
   }, [events]);
 
-  const handleDelete = () => {
-    const deleteEmail = { email };
-
-    fetch(deleteUrl, {
-      method: 'PATCH',
-      credentials: 'include',
-      body: JSON.stringify(deleteEmail),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        throw new Error('Failed to delete user');
-      })
-      .then((responseJson) => {
-        console.log(responseJson);
-        window.location.reload(false);
-      });
-  };
-
   return (
-    <DefaultLayout
-      className={CLASSNAME}
-      header={`${name}`}
-      component={
-        <Button
-          onClick={() => {
-            setEdit((prevEdit) => !prevEdit);
-          }}
-        >
-          Edit
-        </Button>
-      }
-    >
+    <DefaultLayout className={CLASSNAME} header={`${name}`}>
       <Row>
         <Col xs={8}>
           <EventCalendar events={events} groups={true} />
         </Col>
+
         <Col>
+          {admin.isAdmin && (
+            <Button
+              className="d-flex justify-content-center align-items-center mx-auto"
+              style={{ marginBottom: '5%' }}
+              onClick={() => {
+                setEdit((prevEdit) => !prevEdit);
+              }}
+            >
+              Edit
+            </Button>
+          )}
           <Container fluid>
             <Row className="mb-3 d-flex justify-content-center align-items-center">
               <Col
                 xs={4}
                 className="d-flex justify-content-center align-items-center mx-auto"
               >
-                <ListGroup>
-                  {members.map((member) => (
-                    <ListGroup.Item
-                      className="overflow-auto d-flex align-items-center"
-                      style={{ width: '350px', height: '35px' }}
-                    >
-                      <Row className="d-flex">
-                        <Col className="me-3" style={{ width: '275px' }}>
-                          {member[1]}{' '}
-                        </Col>
-                        <Col
-                          className="d-flex justify-content-end"
-                          style={{ width: '100px' }}
-                        >
-                          {edit && (
-                            <CloseButton
-                              onClick={() => {
-                                handleShow();
-                                setDelete(member[2]);
-                                setDelUser(member[1]);
-                              }}
-                            ></CloseButton>
-                          )}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
+                <MemberList
+                  members={members}
+                  groupId={groupId}
+                  admin={admin.isAdmin}
+                  edit={edit}
+                  hideId={hideId}
+                  setHideId={setHideId}
+                  handleShow={handleShow}
+                  setDelUser={setDelUser}
+                ></MemberList>
               </Col>
             </Row>
             <Row>
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
-                {edit && <AddGroupMembersForm></AddGroupMembersForm>}
+                {admin.isAdmin && edit && (
+                  <AddGroupMembersForm user={user}></AddGroupMembersForm>
+                )}
               </Col>
               <Col></Col>
             </Row>
             <Row>
-              <Col></Col>
-              <Col style={{paddingTop: '5%'}} className="d-flex justify-content-center align-items-center mx-auto">
-                {edit && <DeleteGroupButton groupId={groupId}></DeleteGroupButton>}
+              <Col
+                style={{ paddingTop: '5%' }}
+                className="d-flex justify-content-center align-items-center mx-auto"
+              >
+                {admin.isAdmin && edit && (
+                  <DeleteGroupButton
+                    groupId={groupId}
+                    userId={user.user.id}
+                  ></DeleteGroupButton>
+                )}
               </Col>
-              <Col></Col>
+            </Row>
+            <Row>
+              <Col
+                style={{ paddingTop: '5%', paddingLeft: '8%' }}
+                className="d-flex justify-content-center align-items-center mx-auto"
+              >
+                <FreeTimeForm events={events} setEvents={setEvents} />
+              </Col>
+              <Col style={{paddingTop: '5%'}}> 
+                <CreateEventForm user={user}></CreateEventForm>
+            </Col>
             </Row>
           </Container>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Remove {del_user}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Are you sure you want to remove {del_user}?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button
-                variant="danger"
-                onClick={() => {
-                  handleClose();
-                  handleDelete();
-                }}
-              >
-                Delete user
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <Col style={{paddingTop: '5%'}} className="d-flex justify-content-center align-items-center mx-auto"> 
-                <CreateEventForm user={user}></CreateEventForm>
-          </Col>
+          <DeleteModal
+            show={show}
+            email={del_user.email}
+            propUser={user}
+            admin={admin}
+            id={del_user.id}
+            handleClose={handleClose}
+            name={del_user.name}
+            deleteUrl={deleteUrl}
+          ></DeleteModal>
         </Col>
       </Row>
-    </DefaultLayout> 
-
+    </DefaultLayout>
   );
 }

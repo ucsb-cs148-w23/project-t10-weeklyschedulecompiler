@@ -7,41 +7,22 @@ import GroupPage from './pages/GroupPage';
 import HomePage from './pages/HomePage';
 import Main from './pages/Main';
 import { config } from './Constants';
+import AboutPage from './pages/AboutPage';
+import { checkUser } from './lib/fetchUser';
 
 function App() {
   const [user, setUser] = useState({ authenticated: false, user: null });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (loading) {
-      fetch(config.url+'/check', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Credentials': true,
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) return response.json();
-          throw new Error('failed to authenticate user');
-        })
-        .then((responseJson) => {
-          setUser({
-            authenticated: true,
-            user: responseJson.user,
-          });
-        })
-        .catch((error) => {
-          setUser({
-            authenticated: false,
-            error: 'Failed to authenticate user',
-          });
-        });
+    async function localCheckUser() {
+      const user = await checkUser();
+      setUser(user);
+      setLoading(false);
     }
-    setLoading(false);
-    console.log(user);
+    if (loading) {
+      localCheckUser();
+    }
   }, [loading, user]);
 
   return (
@@ -50,6 +31,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/about" element={<AboutPage user={user} />} />
           <Route path="/home" element={<HomePage user={user} />} />
           <Route path="/create" element={<CreateGroupPage user={user} />} />
           <Route path="/groups" element={<GroupsPage user={user} />} />
