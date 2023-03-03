@@ -3,7 +3,7 @@ import { Card, Col } from 'react-bootstrap';
 
 function inviteCard( { groupName }) {
     return (
-        <Card>
+        <Card className="m-2">
             <Card.Body style={{ width: '100%', cursor: 'pointer' }}>
                 <Card.Title>{groupName}</Card.Title>
             </Card.Body>

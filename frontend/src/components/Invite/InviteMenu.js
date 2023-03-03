@@ -20,6 +20,12 @@ function InviteMenu() {
                 </Button>
                 {click && <div className="dropdown-open">
                     <InviteCard groupName="Group 1" />
+                    <InviteCard groupName="Group 1" />
+                    <InviteCard groupName="Group 1" />
+                    <InviteCard groupName="Group 1" />
+                    <InviteCard groupName="Group 1" />
+                    <InviteCard groupName="Group 1" />
+
                 </div>}
                 
             </div>
