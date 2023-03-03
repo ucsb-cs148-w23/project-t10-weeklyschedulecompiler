@@ -51,12 +51,13 @@ export async function fetchGroupEvents(url, hideId) {
       text: event[3] + "'s Event",
       start: event[1],
       end: event[2],
+      userId: event[4],
     };
   });
 
   for (let i = 0; i < hideId.length; i++) {
     groupEvents = groupEvents.filter((event) => {
-      return event[4] !== hideId[i];
+      return event.userId !== hideId[i];
     });
   }
 

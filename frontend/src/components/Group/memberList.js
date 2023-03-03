@@ -1,16 +1,16 @@
 import { ListGroup, Row, Col, CloseButton } from 'react-bootstrap';
 import { updateGroupMemberEvents } from '../../lib/fetchEvents';
-import React from 'react';
+import { useEffect, React } from 'react';
 
 export default function MemberList(props) {
   const members = props.members;
-  let hideId = props.hideId;
+
   return (
     <ListGroup>
       {members.map((member) => (
         <ListGroup.Item
           className="overflow-auto d-flex align-items-center"
-          style={{ width: '450px', height: '35px' }}
+          style={{ width: '400px', height: '35px' }}
         >
           <Row className="d-flex">
             <Col className="me-3" style={{ width: '275px' }}>
@@ -20,21 +20,35 @@ export default function MemberList(props) {
               className="d-flex justify-content-end"
               style={{ witdh: '50px' }}
             >
-              <p
-                style={{
-                  cursor: 'pointer',
-                  position: 'absolute',
-                  right: '150px',
-                }}
-                onClick={() => {
-                  props.setHideId([...hideId, member[0]]);
-                  setTimeout(() => {
-                    window.location.reload(false);
-                  }, 1000);
-                }}
-              >
-                Hide
-              </p>
+              {props.hideId.indexOf(member[0]) > -1 ? (
+                <p
+                  style={{
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    right: '150px',
+                  }}
+                  onClick={() => {
+                    props.setHideId((Id) =>
+                      Id.filter((Id) => Id !== member[0])
+                    );
+                  }}
+                >
+                  Show
+                </p>
+              ) : (
+                <p
+                  style={{
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    right: '150px',
+                  }}
+                  onClick={() => {
+                    props.setHideId([...props.hideId, member[0]]);
+                  }}
+                >
+                  Hide
+                </p>
+              )}
               <p
                 style={{
                   cursor: 'pointer',
@@ -52,6 +66,11 @@ export default function MemberList(props) {
               </p>
               {props.admin && props.edit && (
                 <CloseButton
+                  style={{
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    right: '10px',
+                  }}
                   onClick={() => {
                     props.handleShow();
                     props.setDelUser({
