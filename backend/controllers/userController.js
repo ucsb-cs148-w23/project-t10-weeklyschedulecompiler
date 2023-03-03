@@ -61,6 +61,8 @@ async function updateUserEvents(req, res) {
         end.substring(0, end.lastIndexOf('-')),
       ]);
   });
+  
+  userEvents = [].concat(userEvents, user.localEvents);
 
   console.log(userEvents);
   const userEventsResponse = await User.findOneAndUpdate(
@@ -111,23 +113,31 @@ async function getUserGroupsInfo(req, res) {
 
 async function addUserEvent(req,res) {
   // get user
-  const googleId = req.params.id;
-  const user = await User.findOne({ googleId: googleId });
+  const id  = req.body.id;
+  const user = await User.findOne({ googleId: id });
   const eventName = req.body.eventName;
   const startTime = req.body.startTime;
   const endTime = req.body.endTime;
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
 
-  if (!user) {
-    return res.status(400).json({ error: 'No such user' });
+  try {
+    if (!user) {
+      return res.status(404).json({ error: 'No such user' });
+    }
+
+    const formattedStartTime = startDate + 'T' + startTime + ':00'; 
+    const formattedEndTime = endDate + 'T' + endTime + ':00';
+
+    // // push new event to their events array
+    user.localEvents.push([eventName, formattedStartTime, formattedEndTime]);
+    user.localEvents = [...new Set(user.localEvents)];
+    user.save();
+
+    res.status(200).json(user.localEvents);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  // push new event to their events array
-  user.events.push([eventName, startTime, endTime]);
-  user.events = [...new Set(user.events)];
-  user.save();
-
-  res.status(200).json(events);
-
 }
 
 module.exports = {
