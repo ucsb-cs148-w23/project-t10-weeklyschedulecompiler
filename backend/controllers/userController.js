@@ -108,9 +108,32 @@ async function getUserGroupsInfo(req, res) {
   res.status(200).json(groupInfo);
 }
 
+// Patch request that sends invites to user
+async function sendInvite(req, res) {
+  // request body should have groupId, groupName, and email
+  const groupId = req.body.groupId;
+  const groupName = req.body.groupName;
+  const email = req.body.email;
+
+  console.log(email)
+
+  // find user with email
+  const user = await User.findOne({ email: email });
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' });
+  }
+
+  user.invites.push([ groupId, groupName ]);
+  user.save();
+
+  res.status(200).json({ message: 'Invite sent', user: user });
+}
+
 module.exports = {
   getUserEvents,
   updateUserEvents,
   getUserGroups,
   getUserGroupsInfo,
+  sendInvite,
 };
