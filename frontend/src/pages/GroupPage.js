@@ -10,7 +10,6 @@ import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
 import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
-import { deleteGroupMember } from '../lib/handleGroup';
 import { Modal } from 'react-bootstrap';
 import { deleteGroup } from '../lib/handleGroup';
 
@@ -117,12 +116,9 @@ export default function GroupDetails({ user }) {
               >
                 {admin.isAdmin && edit && (
                   <DeleteGroupButton
-                    onClick = {() => {
-                      handleShowGroup();
-                      setDelGroup(groupId);
-                    }}
-                    groupId={groupId}
-                    userId={user.user.id}
+                    handleShowGroup = {handleShowGroup}
+                    setDelGroup = {setDelGroup}
+                    groupName={name}
                   ></DeleteGroupButton>
                 )}
               </Col>
@@ -139,11 +135,12 @@ export default function GroupDetails({ user }) {
             name={del_user.name}
             deleteUrl={deleteUrl}
           ></DeleteModal>
+
           <Modal show={showGroup} onHide={handleCloseGroup}>
             <Modal.Header closeButton>
               <Modal.Title>Remove {del_group}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to remove group{del_group}?</Modal.Body>
+            <Modal.Body>Are you sure you want to remove group {del_group}?</Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseGroup}>
                 Close
@@ -152,7 +149,7 @@ export default function GroupDetails({ user }) {
                 variant="danger"
                 onClick={async () => {
                   handleCloseGroup();
-                  deleteGroup(url, {userId: groupId});
+                  deleteGroup(url, {userId: name});
                   setTimeout(() => {
                     window.location.reload(false);
                   }, 100);
