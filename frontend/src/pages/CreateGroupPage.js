@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateGroupForm from '../components/forms/CreateGroupForm';
 import DefaultLayout from '../layouts/DefaultLayout';
 import { checkUser } from '../lib/fetchUser';
-
+import '../style/DefaultLayout.css';
 const CreateGroupPage = ({ user }) => {
   const navigate = useNavigate();
 
@@ -17,9 +17,9 @@ const CreateGroupPage = ({ user }) => {
   });
 
   return (
-    <DefaultLayout header={'Create a Group'}>
-      <CreateGroupForm user={user}></CreateGroupForm>
-    </DefaultLayout>
+    <><DefaultLayout header={'Create a Group'}>
+      <p><CreateGroupForm user={user}></CreateGroupForm></p>
+    </DefaultLayout><div className='background_padding'></div></>
   );
 };
 

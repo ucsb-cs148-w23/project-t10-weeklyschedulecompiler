@@ -29,7 +29,7 @@ function CreateGroupForm({user}) {
 
 
     return (
-        <Form onSubmit={createGroup} style={{fontSize: "30px", marginLeft: "600px", marginTop: "25px"}}>
+        <Form onSubmit={createGroup} style={{fontSize: "30px", marginTop: "25px"}}>
           <label>Enter Group Name</label>
           <div>
             <input

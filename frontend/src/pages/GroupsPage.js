@@ -27,21 +27,8 @@ export default function GroupsPage({ user }) {
   });
 
   return (
-    <div className='background'>
-    <GroupsPageLayout header={'Groups'} component={<CreateGroupButton />}>
+    <><DefaultLayout header={'Groups'} component={<CreateGroupButton />}>
       <Groups groups={groups} />
-      {/* <UpdateUserEventsButton user={user} handler={updateEvents} /> */}
-      {events.map((event, i) => {
-        return (
-          <div>
-            <div>{i}</div>
-            <div>{event[0]}</div>
-            <div>{event[1]}</div>
-            <div>{event[2]}</div>
-          </div>
-        );
-      })}
-    </GroupsPageLayout>
-    </div>
+    </DefaultLayout><div className='background_padding'></div></>
   );
 }
