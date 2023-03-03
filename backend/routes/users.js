@@ -7,7 +7,6 @@ const {
   getUserEvents,
   getUserGroups,
   getUserGroupsInfo,
-  sendInvite,
 } = require('../controllers/userController');
 
 router.get('/:id', getUserEvents);
@@ -17,7 +16,5 @@ router.patch('/', updateUserEvents);
 router.get('/groups/:id', getUserGroups);
 
 router.get('/groupsinfo/:id', getUserGroupsInfo);
-
-router.patch('/invite', sendInvite);
 
 module.exports = router;
