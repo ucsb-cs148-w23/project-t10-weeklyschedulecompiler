@@ -38,6 +38,7 @@ export default function GroupDetails({ user }) {
   let url = config.url + '/api/group' + groupId;
   let deleteUrl = config.url + '/api/group/members' + groupId;
   let eventsUrl = config.url + '/api/group/events' + groupId;
+  let user_id = user.user.id;
 
   useEffect(() => {
     async function fetchData() {
@@ -154,7 +155,7 @@ export default function GroupDetails({ user }) {
                 variant="danger"
                 onClick={async () => {
                   handleCloseGroup();
-                  deleteGroup(url, {userId: name});
+                  deleteGroup(url, {userId: user_id});
                   setTimeout(() => {
                     window.location.reload(false);
                   }, 100);
