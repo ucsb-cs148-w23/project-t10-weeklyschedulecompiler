@@ -10,7 +10,6 @@ import { checkGroup, fetchGroupEvents } from '../lib/fetchEvents';
 import { checkUser } from '../lib/fetchUser';
 import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
-import HideEvents from '../components/Buttons/HideEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
@@ -72,6 +71,7 @@ export default function GroupDetails({ user }) {
               className="d-flex justify-content-center align-items-center mx-auto"
               style={{ marginBottom: '5%' }}
               onClick={() => {
+                console.log(events);
                 setEdit((prevEdit) => !prevEdit);
               }}
             >
@@ -104,9 +104,7 @@ export default function GroupDetails({ user }) {
               <Col></Col>
             </Row>
             <Row>
-              <Col>
-                <HideEvents events={events}></HideEvents>
-              </Col>
+              <Col></Col>
               <Col
                 style={{ paddingTop: '5%' }}
                 className="d-flex justify-content-center align-items-center mx-auto"

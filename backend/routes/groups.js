@@ -8,7 +8,9 @@ const {
   getGroupEvents,
   updateGroupEvents,
   updateGroupMemberEvents,
+  hideGroupMemberEvents,
 } = require('../controllers/groupController');
+
 // GET a single group
 router.get('/:id', getGroup);
 
@@ -32,5 +34,8 @@ router.patch('/events/:id', updateGroupEvents);
 
 //UPDATE a specific group member's events
 router.patch('/events/member/:id', updateGroupMemberEvents);
+
+//UPDATE a group's events to hide a certain member
+router.patch('/events/member/hide/:id', hideGroupMemberEvents);
 
 module.exports = router;
