@@ -31,6 +31,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/about" element={<AboutPage user={user} />} />
           <Route path="/home" element={<HomePage user={user} />} />
           <Route path="/create" element={<CreateGroupPage user={user} />} />
           <Route path="/groups" element={<GroupsPage user={user} />} />
