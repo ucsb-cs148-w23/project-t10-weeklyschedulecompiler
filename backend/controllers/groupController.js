@@ -354,18 +354,13 @@ const getFreeTime = async (req, res) => {
 
   let events = group.calendarEvents;
 
-  console.log(events);
-
   let len = 0;
   {
     hideId ? (len = hideId.length) : (len = 0);
   }
   console.log(len);
   for (let i = 0; i < len; i++) {
-    console.log('called');
     events = events.filter((event) => {
-      console.log(event.userId);
-      console.log(hideId[i]);
       return event[4] !== hideId[i];
     });
   }
