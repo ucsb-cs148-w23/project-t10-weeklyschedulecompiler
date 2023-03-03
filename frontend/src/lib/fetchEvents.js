@@ -79,21 +79,6 @@ export async function updateGroupMemberEvents(groupId, userId) {
   return events;
 }
 
-export async function hideGroupMemberEvents(groupId, userId) {
-  const response = await fetch(
-    config.url + '/api/group/events/member/hide' + groupId,
-    {
-      method: 'PATCH',
-      body: JSON.stringify({ id: userId }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  const { events } = await response.json();
-  return events;
-}
-
 export async function getFreeTime(groupId, range) {
   const response = await fetch(config.url + '/api/group/free' + groupId, {
     method: 'PATCH',
