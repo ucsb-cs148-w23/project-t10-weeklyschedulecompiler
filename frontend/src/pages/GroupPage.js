@@ -27,6 +27,7 @@ export default function GroupDetails({ user }) {
   const [del_user, setDelUser] = useState('');
   const [admin, setAdmin] = useState('');
   const [del_group, setDelGroup] = useState('');
+  const [hideId, setHideId] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleCloseGroup = () => setShowGroup(false);
@@ -55,11 +56,14 @@ export default function GroupDetails({ user }) {
     fetchData();
 
     async function getEvents() {
-      const groupEvents = await fetchGroupEvents(eventsUrl);
+      let newHideId = JSON.parse(sessionStorage.getItem('hideId'));
+      {
+        newHideId ? setHideId(newHideId) : setHideId([]);
+      }
+      const groupEvents = await fetchGroupEvents(eventsUrl, newHideId);
       setEvents(groupEvents);
       setFetched(true);
     }
-
     fetchData();
     if (!fetched) getEvents();
   }, [events]);
@@ -94,6 +98,8 @@ export default function GroupDetails({ user }) {
                   groupId={groupId}
                   admin={admin.isAdmin}
                   edit={edit}
+                  hideId={hideId}
+                  setHideId={setHideId}
                   handleShow={handleShow}
                   setDelUser={setDelUser}
                 ></MemberList>
@@ -109,7 +115,6 @@ export default function GroupDetails({ user }) {
               <Col></Col>
             </Row>
             <Row>
-              <Col></Col>
               <Col
                 style={{ paddingTop: '5%' }}
                 className="d-flex justify-content-center align-items-center mx-auto"
