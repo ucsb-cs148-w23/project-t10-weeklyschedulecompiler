@@ -42,7 +42,4 @@ router.patch('/events/member/hide/:id', hideGroupMemberEvents);
 //GET a group's free time
 router.patch('/free/:id', getFreeTime);
 
-//UPDATE a group's events to hide a certain member
-router.patch('/events/member/hide/:id', hideGroupMemberEvents);
-
 module.exports = router;
