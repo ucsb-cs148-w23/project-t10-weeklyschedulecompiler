@@ -39,7 +39,7 @@ export async function checkGroup(url, user) {
   return { exists: false, group: null };
 }
 
-export async function fetchGroupEvents(url) {
+export async function fetchGroupEvents(url, hideId) {
   const receivedEvents = await fetch(url, {
     method: 'GET',
   });
@@ -51,9 +51,21 @@ export async function fetchGroupEvents(url) {
       text: event[3] + "'s Event",
       start: event[1],
       end: event[2],
+      userId: event[4],
     };
   });
 
+  let len = 0;
+  {
+    hideId ? (len = hideId.length) : (len = 0);
+  }
+  for (let i = 0; i < len; i++) {
+    groupEvents = groupEvents.filter((event) => {
+      console.log(hideId[i]);
+      return event.userId !== hideId[i];
+    });
+  }
+  console.log(groupEvents);
   return groupEvents;
 }
 
@@ -70,4 +82,31 @@ export async function updateGroupMemberEvents(groupId, userId) {
   );
   const { events } = await response.json();
   return events;
+}
+
+export async function getFreeTime(groupId, range) {
+  const response = await fetch(config.url + '/api/group/free' + groupId, {
+    method: 'PATCH',
+    body: JSON.stringify(range),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const events = await response.json();
+
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const freeTimes = events.map((event) => {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return {
+      text: event.text,
+      start: start.toLocaleString('en-US', { timeZone: timezone }),
+      end: end.toLocaleString('en-US', { timeZone: timezone }),
+    };
+  });
+
+  // console.log(freeTimes);
+  return freeTimes;
 }
