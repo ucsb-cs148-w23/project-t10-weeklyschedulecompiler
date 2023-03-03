@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CreateGroupButton from '../components/Buttons/CreateGroupButton';
+import InviteMenu from '../components/Invite/InviteMenu';
 import Groups from '../components/Group/Groups';
 import DefaultLayout from '../layouts/DefaultLayout';
 import { checkUser } from '../lib/fetchUser';
