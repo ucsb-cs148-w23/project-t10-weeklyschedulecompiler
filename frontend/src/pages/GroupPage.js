@@ -51,11 +51,12 @@ export default function GroupDetails({ user }) {
     fetchData();
 
     async function getEvents() {
-      const groupEvents = await fetchGroupEvents(eventsUrl, hideId);
+      let newHideId = JSON.parse(sessionStorage.getItem('hideId'));
+      setHideId(newHideId);
+      const groupEvents = await fetchGroupEvents(eventsUrl, newHideId);
       setEvents(groupEvents);
       setFetched(true);
     }
-
     fetchData();
     if (!fetched) getEvents();
   }, [events]);

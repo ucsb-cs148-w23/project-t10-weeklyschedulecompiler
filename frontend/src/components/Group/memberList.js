@@ -28,9 +28,14 @@ export default function MemberList(props) {
                     right: '150px',
                   }}
                   onClick={() => {
-                    props.setHideId((Id) =>
-                      Id.filter((Id) => Id !== member[0])
+                    let newHideId = props.hideId.filter(
+                      (Id) => Id !== member[0]
                     );
+                    props.setHideId(newHideId);
+                    sessionStorage.setItem('hideId', JSON.stringify(newHideId));
+                    setTimeout(() => {
+                      window.location.reload(false);
+                    }, 1000);
                   }}
                 >
                   Show
@@ -43,7 +48,12 @@ export default function MemberList(props) {
                     right: '150px',
                   }}
                   onClick={() => {
-                    props.setHideId([...props.hideId, member[0]]);
+                    let newHideId = [...props.hideId, member[0]];
+                    props.setHideId(newHideId);
+                    sessionStorage.setItem('hideId', JSON.stringify(newHideId));
+                    setTimeout(() => {
+                      window.location.reload(false);
+                    }, 1000);
                   }}
                 >
                   Hide
@@ -59,7 +69,7 @@ export default function MemberList(props) {
                   updateGroupMemberEvents(props.groupId, member[0]);
                   setTimeout(() => {
                     window.location.reload(false);
-                  }, 1500);
+                  }, 1000);
                 }}
               >
                 Refresh
@@ -78,6 +88,7 @@ export default function MemberList(props) {
                       email: member[2],
                       id: member[0],
                     });
+                    console.log(JSON.parse(localStorage.getItem('hideId')));
                   }}
                 ></CloseButton>
               )}
