@@ -1,9 +1,6 @@
 import { ListGroup, Row, Col, CloseButton } from 'react-bootstrap';
-import {
-  hideGroupMemberEvents,
-  updateGroupMemberEvents,
-} from '../../lib/fetchEvents';
-import React from 'react';
+import { updateGroupMemberEvents } from '../../lib/fetchEvents';
+import { useEffect, React } from 'react';
 
 export default function MemberList(props) {
   const members = props.members;
@@ -13,7 +10,7 @@ export default function MemberList(props) {
       {members.map((member) => (
         <ListGroup.Item
           className="overflow-auto d-flex align-items-center"
-          style={{ width: '700px', height: '35px' }}
+          style={{ width: '400px', height: '35px' }}
         >
           <Row className="d-flex">
             <Col className="me-3" style={{ width: '275px' }}>
@@ -52,25 +49,6 @@ export default function MemberList(props) {
                   Hide
                 </p>
               )}
-              <p
-                style={{
-                  cursor: 'pointer',
-                  position: 'absolute',
-                  right: '200px',
-                }}
-                onClick={() => {
-                  console.log(props.groupId);
-                  console.log(member[0]);
-                  hideGroupMemberEvents(props.groupId, member[0]);
-                  setTimeout(() => {
-                    window.location.reload(false);
-                  }, 1500);
-                }}
-              >
-                Hide
-              </p>
-            </Col>
-            <Col>
               <p
                 style={{
                   cursor: 'pointer',

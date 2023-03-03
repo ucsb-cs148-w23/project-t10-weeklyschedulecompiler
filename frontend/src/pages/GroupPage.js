@@ -12,7 +12,6 @@ import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
 import { deleteGroupMember } from '../lib/handleGroup';
 import FreeTimeForm from '../components/forms/FreeTimeForm';
-import HideEvents from '../components/Buttons/HideEvents';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 

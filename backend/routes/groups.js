@@ -9,7 +9,6 @@ const {
   updateGroupEvents,
   updateGroupMemberEvents,
   getFreeTime,
-  hideGroupMemberEvents,
 } = require('../controllers/groupController');
 
 // GET a single group
@@ -38,11 +37,5 @@ router.patch('/events/member/:id', updateGroupMemberEvents);
 
 //GET a group's free time
 router.patch('/free/:id', getFreeTime);
-
-//GET a group's free time
-router.patch('/free/:id', getFreeTime);
-
-//UPDATE a group's events to hide a certain member
-router.patch('/events/member/hide/:id', hideGroupMemberEvents);
 
 module.exports = router;
