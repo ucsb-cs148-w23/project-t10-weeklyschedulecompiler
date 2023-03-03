@@ -20,7 +20,7 @@ export default function MemberList(props) {
               className="d-flex justify-content-center"
               style={{ witdh: '100px' }}
             >
-              {props.hideId.indexOf(member[0]) > -1 ? (
+              {props.hideId?.indexOf(member[0]) > -1 ? (
                 <p
                   style={{
                     cursor: 'pointer',

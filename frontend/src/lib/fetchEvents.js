@@ -54,7 +54,12 @@ export async function fetchGroupEvents(url, hideId) {
       userId: event[4],
     };
   });
-  for (let i = 0; i < hideId.length; i++) {
+
+  let len = 0;
+  {
+    hideId ? (len = hideId.length) : (len = 0);
+  }
+  for (let i = 0; i < len; i++) {
     groupEvents = groupEvents.filter((event) => {
       console.log(hideId[i]);
       return event.userId !== hideId[i];
