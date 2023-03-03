@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Container, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import CreateGroupForm from '../components/forms/CreateGroupForm';
 import DefaultLayout from '../layouts/DefaultLayout';
@@ -18,7 +17,7 @@ const CreateGroupPage = ({ user }) => {
 
   return (
     <><DefaultLayout header={'Create a Group'}>
-      <p><CreateGroupForm user={user}></CreateGroupForm></p>
+      <CreateGroupForm user={user}></CreateGroupForm>
     </DefaultLayout><div className='background_padding'></div></>
   );
 };

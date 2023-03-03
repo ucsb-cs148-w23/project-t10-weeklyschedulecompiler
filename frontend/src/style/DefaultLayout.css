@@ -1,25 +1,24 @@
 .background {
-  background-image: url("https://e1.pxfuel.com/desktop-wallpaper/820/687/desktop-wallpaper-1080x1920-baby-blue-eyes-solid-color-backgrounds-solid-color-phone.jpg");
+  background-color: #a1caf0;
   height: 100%;
   width: 100%;
+  z-index: 0;
   margin-top: 0%;
   display: flex;
   flex-direction:column;
   justify-content: center;
   align-items: center;
-  background-position: center;
-  background-repeat: repeat-y;
   background-size: cover;
-  margin-bottom: 0%;
-  position: relative;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 .background_padding{
   background-color: #a1caf0;
-  height: 30vh;
+  height: 50vh;
   width: 100%;
+  z-index: 0;
 }
 .backbutton{
+  z-index: 10;
   margin: 30px 10px 40px;
   justify-content: center;
   align-items: center;
@@ -31,6 +30,7 @@
 }
 
 .headerContainer {
+  z-index: 10;
   width: auto;
   height: auto;
   display: block;
@@ -49,7 +49,7 @@
 }
 
 .headerContainer p {
-  padding-top: 30%;
+  z-index: 11;
   justify-content: center;
   align-items: center;
   display: flex;

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import CreateGroupButton from '../components/Buttons/CreateGroupButton';
 import InviteMenu from '../components/Invite/InviteMenu';
 import Groups from '../components/Group/Groups';
-import DefaultLayout from '../layouts/DefaultLayout';
+import GroupsPageLayout from '../layouts/GroupsPageLayout';
 import { checkUser } from '../lib/fetchUser';
 import { fetchGroups } from '../lib/handleGroup';
-
+import '../style/GroupsPage.css';
 export default function GroupsPage({ user }) {
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
@@ -28,8 +28,10 @@ export default function GroupsPage({ user }) {
   });
 
   return (
-    <><DefaultLayout header={'Groups'} component={<CreateGroupButton />}>
+    <div className='backgroundColor'>
+    <GroupsPageLayout header={'Groups'}component={<CreateGroupButton />}>
       <Groups groups={groups} />
-    </DefaultLayout><div className='background_padding'></div></>
+    </GroupsPageLayout>
+    </div>
   );
 }

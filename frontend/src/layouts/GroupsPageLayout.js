@@ -2,7 +2,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../style/GroupsPage.css';
 import React from 'react';
-import GroupsPage from '../pages/GroupsPage';
 
 const start = 'd-flex justify-content-start align-items-center';
 const center = 'd-flex justify-content-center align-items-center';
