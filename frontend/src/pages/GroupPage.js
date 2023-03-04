@@ -155,7 +155,10 @@ export default function GroupDetails({ user }) {
                 variant="danger"
                 onClick={async () => {
                   handleCloseGroup();
-                  deleteGroup(url, {userId: user_id});
+                  const response = await deleteGroup(url, { userId: user_id });
+                  if (response?.success) {
+                    navigate('/groups');
+                  }
                   setTimeout(() => {
                     window.location.reload(false);
                   }, 100);
