@@ -21,7 +21,7 @@ function InviteMenu({ user, setGroups }) {
         <>
             <div className="inviteDropdown">
                 <div className="numNotifs">
-                    1
+                    {invites.length}
                 </div>
                 <Button variant="light" onClick={handleClick}>
                     {click && <>Invites <div className="arrow">&#x25B2;</div></>}{!click && <>Invites <div className="arrow">&#x25BC;</div></>}

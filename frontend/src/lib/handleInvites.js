@@ -21,18 +21,19 @@ export async function acceptInvites(user, groupId) {
     return data
 }
 
-export async function declineInvites(user, groupId, groupName) {
+export async function declineInvites(user, groupId) {
     const response = await fetch(`${config.url}/api/invite/decline`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            user: user,
+            id: user.user.id,
             groupId: groupId,
-            groupName: groupName,
         }),
     })
+    const data = await response.json();
+    return data
 }
 
 
