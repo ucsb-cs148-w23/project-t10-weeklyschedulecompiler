@@ -29,10 +29,10 @@ export default function GroupDetails({ user }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const path = window.location.pathname;
-  let groupId = path.substring(path.lastIndexOf('/'));
-  let url = config.url + '/api/group' + groupId;
-  let deleteUrl = config.url + '/api/group/members' + groupId;
-  let eventsUrl = config.url + '/api/group/events' + groupId;
+  let groupId = path.substring(path.lastIndexOf('/')+1);
+  let url = config.url + '/api/group/' + groupId;
+  let deleteUrl = config.url + '/api/group/members/' + groupId;
+  let eventsUrl = config.url + '/api/group/events/' + groupId;
 
   useEffect(() => {
     async function fetchData() {
@@ -104,7 +104,7 @@ export default function GroupDetails({ user }) {
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
                 {admin.isAdmin && edit && (
-                  <AddGroupMembersForm user={user}></AddGroupMembersForm>
+                  <AddGroupMembersForm user={user} groupName={name} groupId={groupId}></AddGroupMembersForm>
                 )}
               </Col>
               <Col></Col>

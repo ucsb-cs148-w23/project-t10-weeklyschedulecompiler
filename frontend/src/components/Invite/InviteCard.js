@@ -1,14 +1,25 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
+
 import { Card, Row, Col, Button } from 'react-bootstrap';
 
-function inviteCard( { groupName }) {
+import { acceptInvites, declineInvites } from '../../lib/handleInvites';
 
+
+function inviteCard( { user, groupId, groupName, setGroups, setInvites }) {
     function acceptInvite() {
         console.log('accept invite')
+        acceptInvites(user, groupId).then((data) => {
+            setGroups(data.groups);
+            setInvites(data.user.invites);
+        })
     }
     
     function declineInvite() {
         console.log('decline invite')
+        declineInvites(user, groupId).then((data) => {
+            setInvites(data.user.invites);
+        })
     }
 
     return (

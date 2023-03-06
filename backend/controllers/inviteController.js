@@ -1,6 +1,21 @@
 const Group = require('../models/groupModel');
 const User = require('../models/userModel');
 
+// Get request that returns all invites for user
+async function getInvites(req, res) {
+    const googleId = req.params.id;
+
+    console.log(googleId)
+
+    const user = await User.findOne({ googleId: googleId });
+
+    if (!user) {
+        return res.status(400).json({ error: 'No such user' });
+    }
+
+    res.status(200).json({ invites: user.invites });
+}
+
 // Patch request that sends invites to user
 async function sendInvite(req, res) {
     // request body should have groupId, groupName, and email
@@ -55,7 +70,14 @@ async function acceptInvite(req, res) {
         group.save();
     }
 
-    res.status(200).json({ message: 'Invite accepted', user: user });
+    // Get group info for user
+    const groupInfo = [];
+    for (let i = 0; i < user.groupIds.length; i++) {
+        const group = await Group.findOne({ _id: user.groupIds[i] });
+        groupInfo.push(group);
+    }
+
+    res.status(200).json({ message: 'Invite accepted', user: user, groups: groupInfo });
 }
 
 async function declineInvite(req, res) {
@@ -75,6 +97,7 @@ async function declineInvite(req, res) {
 }
 
 module.exports = {
+    getInvites,
     sendInvite,
     acceptInvite,
     declineInvite,
