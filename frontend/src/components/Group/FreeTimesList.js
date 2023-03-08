@@ -3,7 +3,12 @@ import { Button, Col, Row } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { writeEvents } from '../../lib/fetchEvents';
 
-export default function FreeTimesList({ freeTimes, eventsUrl, userId }) {
+export default function FreeTimesList({
+  freeTimes,
+  eventsUrl,
+  userId,
+  hideId,
+}) {
   if (freeTimes.length === 0) {
     return <></>;
   } else {
@@ -35,7 +40,7 @@ export default function FreeTimesList({ freeTimes, eventsUrl, userId }) {
                     //     end: time.end,
                     //   },
                     // ]);
-                    writeEvents(eventsUrl, time, userId.user.id);
+                    writeEvents(eventsUrl, time, userId.user.id, hideId);
                     setTimeout(() => {
                       window.location.reload(false);
                     }, 1000);

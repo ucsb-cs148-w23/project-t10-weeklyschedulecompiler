@@ -597,6 +597,7 @@ const writeToGoogleCalendar = async (req, res) => {
   const { id } = req.params;
   const userId = req.body.id;
   const time = req.body.time;
+  const hideId = req.body.hideId;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'No such group' });
@@ -626,9 +627,20 @@ const writeToGoogleCalendar = async (req, res) => {
   const calendar = google.calendar({ version: 'v3', auth });
 
   let groupEmails = [];
+  let newGroupMembers = group.groupMembers;
 
-  for (let i = 0; i < group.groupMembers.length; i++) {
-    let memberEmail = { email: group.groupMembers[i][2] };
+  let len = 0;
+  {
+    hideId ? (len = hideId.length) : (len = 0);
+  }
+  for (let i = 0; i < len; i++) {
+    newGroupMembers = newGroupMembers.filter((member) => {
+      return member[0] !== hideId[i];
+    });
+  }
+
+  for (let i = 0; i < newGroupMembers.length; i++) {
+    let memberEmail = { email: newGroupMembers[i][2] };
     groupEmails = [...groupEmails, memberEmail];
   }
 
@@ -658,8 +670,8 @@ const writeToGoogleCalendar = async (req, res) => {
     {
       auth: auth,
       calendarId: 'primary',
-      sendUpdates: 'all',
       resource: event,
+      sendUpdates: 'all',
     },
     function (err, event) {
       if (err) {
