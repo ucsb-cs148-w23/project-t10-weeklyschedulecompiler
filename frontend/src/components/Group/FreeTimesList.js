@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { writeEvents } from '../../lib/fetchEvents';
 
-export default function FreeTimesList({ freeTimes, events, setEvents }) {
+export default function FreeTimesList({ freeTimes, eventsUrl, userId }) {
   if (freeTimes.length === 0) {
     return <></>;
   } else {
@@ -34,6 +35,7 @@ export default function FreeTimesList({ freeTimes, events, setEvents }) {
                     //     end: time.end,
                     //   },
                     // ]);
+                    writeEvents(eventsUrl, time, userId.user.id);
                     console.log(time);
                   }}
                 >

@@ -593,6 +593,85 @@ async function updateGroupEventsHelper(groupMembers) {
   return allUserEvents;
 }
 
+const writeToGoogleCalendar = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.body.id;
+  const time = req.body.time;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'No such group' });
+  }
+
+  let user = await User.findOne({ googleId: userId });
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' });
+  }
+
+  let group = await Group.findOne({ _id: id });
+
+  if (!group) {
+    return res.status(400).json({ error: 'No such group' });
+  }
+
+  const credentials = {
+    type: 'authorized_user',
+    client_id: config.googleClientID,
+    client_secret: config.googleClientSecret,
+    refresh_token: user.refreshToken,
+  };
+
+  auth = google.auth.fromJSON(credentials);
+
+  const calendar = google.calendar({ version: 'v3', auth });
+
+  let groupEmails = [];
+
+  for (let i = 0; i < group.groupMembers.length; i++) {
+    let memberEmail = { email: group.groupMembers[i][2] };
+    groupEmails = [...groupEmails, memberEmail];
+  }
+
+  const startTime = new Date(time.start);
+  const endTime = new Date(time.end);
+  var event = {
+    summary: time.text,
+    start: {
+      dateTime: startTime,
+      timeZone: 'America/Los_Angeles',
+    },
+    end: {
+      dateTime: endTime,
+      timeZone: 'America/Los_Angeles',
+    },
+    attendees: groupEmails,
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: 'email', minutes: 24 * 60 },
+        { method: 'popup', minutes: 10 },
+      ],
+    },
+  };
+
+  calendar.events.insert(
+    {
+      auth: auth,
+      calendarId: 'primary',
+      sendUpdates: 'all',
+      resource: event,
+    },
+    function (err, event) {
+      if (err) {
+        return res.status(400).json({
+          error: 'There was an error contacting the Calendar service: ' + err,
+        });
+      }
+      return res.status(200).json({ event: event.htmlLink });
+    }
+  );
+};
+
 module.exports = {
   getGroup,
   createGroup,
@@ -603,4 +682,5 @@ module.exports = {
   updateGroupEvents,
   updateGroupMemberEvents,
   getFreeTime,
+  writeToGoogleCalendar,
 };

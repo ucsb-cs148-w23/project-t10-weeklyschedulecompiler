@@ -110,3 +110,17 @@ export async function getFreeTime(groupId, range) {
   // console.log(freeTimes);
   return freeTimes;
 }
+
+export async function writeEvents(eventsUrl, time, userId) {
+  const response = await fetch(eventsUrl, {
+    method: 'POST',
+    body: JSON.stringify({ id: userId, time }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const message = await response.json();
+  console.log(message);
+  return message;
+}

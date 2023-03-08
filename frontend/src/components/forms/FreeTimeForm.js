@@ -3,7 +3,7 @@ import { Form, Col, Button, Row, Modal } from 'react-bootstrap';
 import { getFreeTime } from '../../lib/fetchEvents';
 import FreeTimesList from '../Group/FreeTimesList';
 
-export default function FreeTimeForm({ events, setEvents, hideId }) {
+export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
   const path = window.location.pathname;
   let groupId = path.substring(path.lastIndexOf('/'));
   const [startDate, setStartDate] = useState(
@@ -156,8 +156,8 @@ export default function FreeTimeForm({ events, setEvents, hideId }) {
           </Form>
           <FreeTimesList
             freeTimes={freeTimes}
-            events={events}
-            setEvents={setEvents}
+            eventsUrl={eventsUrl}
+            userId={userId}
           />
         </Modal.Body>
       </Modal>
