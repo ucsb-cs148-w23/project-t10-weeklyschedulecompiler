@@ -598,6 +598,8 @@ const writeToGoogleCalendar = async (req, res) => {
   const userId = req.body.id;
   const time = req.body.time;
   const hideId = req.body.hideId;
+  const eventName = req.body.eventName;
+  const eventDescription = req.body.eventDescription;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'No such group' });
@@ -647,7 +649,8 @@ const writeToGoogleCalendar = async (req, res) => {
   const startTime = new Date(time.start);
   const endTime = new Date(time.end);
   var event = {
-    summary: time.text,
+    summary: eventName,
+    description: eventDescription,
     start: {
       dateTime: startTime,
       timeZone: 'America/Los_Angeles',

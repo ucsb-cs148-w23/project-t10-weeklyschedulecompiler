@@ -15,6 +15,8 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
   const [endTime, setEndTime] = useState('17:00');
   const [show, setShow] = useState(false);
   const [freeTimes, setFreeTimes] = useState([]);
+  const [eventName, setEventName] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
 
   function handleClose() {
     setShow(false);
@@ -66,6 +68,32 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Row>
+              <Col md={6}>
+                <Form.Group controlId="name">
+                  <Form.Label>Event Name:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: '10px' }}>
+              <Col style={{ width: '488px' }} md={6}>
+                <Form.Group controlId="description">
+                  <Form.Label>Event Description:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={eventDescription}
+                    onChange={(eventD) =>
+                      setEventDescription(eventD.target.value)
+                    }
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: '10px' }}>
               <Col md={6}>
                 <Form.Group controlId="start-date">
                   <Form.Label>Start Date:</Form.Label>
@@ -159,6 +187,8 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
             eventsUrl={eventsUrl}
             userId={userId}
             hideId={hideId}
+            eventName={eventName}
+            eventDescription={eventDescription}
           />
         </Modal.Body>
       </Modal>

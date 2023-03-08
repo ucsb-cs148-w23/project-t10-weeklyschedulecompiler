@@ -8,6 +8,8 @@ export default function FreeTimesList({
   eventsUrl,
   userId,
   hideId,
+  eventName,
+  eventDescription,
 }) {
   if (freeTimes.length === 0) {
     return <></>;
@@ -40,7 +42,14 @@ export default function FreeTimesList({
                     //     end: time.end,
                     //   },
                     // ]);
-                    writeEvents(eventsUrl, time, userId.user.id, hideId);
+                    writeEvents(
+                      eventsUrl,
+                      time,
+                      userId.user.id,
+                      hideId,
+                      eventName,
+                      eventDescription
+                    );
                     setTimeout(() => {
                       window.location.reload(false);
                     }, 1000);
