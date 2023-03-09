@@ -303,7 +303,28 @@ const updateGroupMemberEvents = async (req, res) => {
       if (!start.includes('T')) {
         return;
       }
-
+      if (event.description) {
+        if (event.description.includes(id)) {
+          const eventID = event.description.substring(
+            event.description.length - 10
+          );
+          const newGroupEvent = [
+            event.summary,
+            start.substring(0, start.lastIndexOf('-')),
+            end.substring(0, end.lastIndexOf('-')),
+            'Group ' + group.name,
+            group.admin,
+            eventID,
+          ];
+          const existingElement = group.createdEvents.find(
+            (event) => event[5] === newGroupEvent[5]
+          );
+          if (!existingElement) {
+            group.createdEvents.push(newGroupEvent);
+          }
+          return;
+        }
+      }
       if (end)
         userEvents.push([
           event.summary,
@@ -323,6 +344,19 @@ const updateGroupMemberEvents = async (req, res) => {
       group.calendarEvents = [...group.calendarEvents, ...userEvents];
     }
   }
+
+  group.calendarEvents = group.calendarEvents.filter(
+    (event) => event.length !== 6
+  );
+
+  const currentDate = new Date();
+
+  group.createdEvents = group.createdEvents.filter((event) => {
+    const elementDate = new Date(event[2]);
+    return elementDate >= currentDate;
+  });
+
+  group.calendarEvents = [...group.calendarEvents, ...group.createdEvents];
 
   group.save();
 
@@ -646,11 +680,18 @@ const writeToGoogleCalendar = async (req, res) => {
     groupEmails = [...groupEmails, memberEmail];
   }
 
+  const currentDate = new Date();
+  const timestamp = currentDate.getTime().toString();
+  const uniqueID = timestamp.padStart(10, '0');
+
+  var groupDescription =
+    '\nThis event was made by Schedu-pile!\nID: ' + id + uniqueID;
+
   const startTime = new Date(time.start);
   const endTime = new Date(time.end);
   var event = {
     summary: eventName,
-    description: eventDescription,
+    description: eventDescription + groupDescription,
     start: {
       dateTime: startTime,
       timeZone: 'America/Los_Angeles',
