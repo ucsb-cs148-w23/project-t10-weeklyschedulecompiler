@@ -19,6 +19,7 @@ export default function GroupsPage({ user }) {
       setTimeout(async () => {
         const groups = await fetchGroups(user);
         setGroups(groups);
+        console.log(groups)
         setLoading(false);
       }, 100);
     }
