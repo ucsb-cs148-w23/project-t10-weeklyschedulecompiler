@@ -17,8 +17,8 @@ export default function HomePage({ user }) {
   });
 
   return (
-    <DefaultLayout>
-      <EventCalendar groups={false} user={user} />
-    </DefaultLayout>
+    <><DefaultLayout>
+      <EventCalendar groups={false} user={user} style={{ marginLeft: '1px' }} />
+    </DefaultLayout><div className='background_padding'></div></>
   );
 }

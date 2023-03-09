@@ -29,7 +29,7 @@ export default function GroupsPage({ user }) {
 
   return (
     <div className='backgroundColor'>
-    <GroupsPageLayout header={'Groups'}component={<CreateGroupButton />}>
+    <GroupsPageLayout header={'Groups'} component={<CreateGroupButton />}>
       <Groups groups={groups} />
     </GroupsPageLayout>
     </div>

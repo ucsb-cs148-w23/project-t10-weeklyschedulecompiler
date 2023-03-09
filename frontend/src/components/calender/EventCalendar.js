@@ -51,6 +51,8 @@ class EventCalendar extends Component {
           display: 'flex',
           marginTop: this.props.groups ? null : '2vh',
           marginLeft: !this.props.groups ? null : '2vw',
+          marginLeft: '2vw',
+          marginRight: '2vw'
         }}
       >
         <div style={styles.left}>

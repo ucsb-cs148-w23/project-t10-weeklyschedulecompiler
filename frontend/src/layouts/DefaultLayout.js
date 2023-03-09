@@ -16,7 +16,7 @@ export default function DefaultLayout({ children, header, component }) {
         </h5>
       </div>
           <div className="headerContainer">
-            <h1>{header}</h1>
+            <h>{header}</h>
             <p>{component}</p>
           </div>
       <p>{children}</p>

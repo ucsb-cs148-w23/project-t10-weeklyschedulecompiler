@@ -4,7 +4,6 @@
     width: 100%;
     z-index: -1;
     margin-top: -2%;
-    /* display: flex; */
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -20,17 +19,6 @@
     width: 100%;
     z-index: -1;
   } 
-  .backbutton{
-    z-index: 10;
-    margin: 30px 10px 40px;
-    justify-content: center;
-    align-items: center;
-    margin-right: 90%;
-    padding: 0.5vw;
-    background-color: rgba(243, 247, 250, 0.5);
-    border-radius: 3px;
-    text-align: center;
-  }
   
   .headerContainer {
     z-index: 10;

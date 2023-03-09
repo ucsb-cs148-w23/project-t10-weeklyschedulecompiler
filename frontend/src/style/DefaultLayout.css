@@ -37,11 +37,11 @@
   margin: 0 0 0;
 }
 
-.headerContainer h1 {
+.headerContainer h {
   justify-content: center;
   text-align: center;
   align-items: center;
-  font-size: 10vw;
+  font-size: 5vw;
   height: 100%;
   font-weight: 600;
   color: rgb(13, 13, 13);
