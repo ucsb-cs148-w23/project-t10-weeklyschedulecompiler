@@ -125,13 +125,15 @@ export default function GroupDetails({ user }) {
             </Row>
             <Row>
               <Col
-                style={{ paddingTop: '5%', paddingLeft: '8%' }}
+                style={{ paddingTop: '5%'}}
                 className="d-flex justify-content-center align-items-center mx-auto"
               >
                 <FreeTimeForm events={events} setEvents={setEvents} />
               </Col>
-              <Col style={{paddingTop: '5%'}}> 
-                <CreateEventForm user={user}></CreateEventForm>
+            </Row>
+            <Row>
+            <Col style={{paddingTop: '5%'}} className="d-flex justify-content-center align-items-center mx-auto"> 
+              <CreateEventForm user={user}></CreateEventForm>
             </Col>
             </Row>
           </Container>

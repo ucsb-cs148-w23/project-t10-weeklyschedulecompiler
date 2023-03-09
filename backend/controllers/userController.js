@@ -38,31 +38,34 @@ async function updateUserEvents(req, res) {
     orderBy: 'startTime',
   });
   const events = response.data.items;
-  if (!events || events.length === 0) {
-    console.log('No upcoming events found.');
-    return;
-  }
-  console.log('Upcoming 10 events:');
   let userEvents = [];
-  events.map((event, i) => {
-    var options = { hour12: false };
+  if (!events || events.length === 0) {
+    console.log('No upcoming events found in Google Calendar.');
+  } else {
+    console.log('Upcoming 10 events:');
+    events.map((event, i) => {
+      var options = { hour12: false };
 
-    const start = event.start.dateTime || event.start.date;
-    const end = event.end.dateTime;
+      const start = event.start.dateTime || event.start.date;
+      const end = event.end.dateTime;
 
-    if (!start.includes('T')) {
-      return;
-    }
+      if (!start.includes('T')) {
+        return;
+      }
 
-    if (end)
-      userEvents.push([
-        event.summary,
-        start.substring(0, start.lastIndexOf('-')),
-        end.substring(0, end.lastIndexOf('-')),
-      ]);
-  });
-  
-  userEvents = userEvents.concat(user.localEvents);
+      if (end)
+        userEvents.push([
+          event.summary,
+          start.substring(0, start.lastIndexOf('-')),
+          end.substring(0, end.lastIndexOf('-')),
+          user.name,
+          user.googleId,
+        ]);
+    });
+  }
+
+  console.log("Local + Google Calendar events:")
+  userEvents = (user.localEvents).concat(userEvents);
   console.log(userEvents);
 
   const userEventsResponse = await User.findOneAndUpdate(
@@ -130,7 +133,7 @@ async function addUserEvent(req,res) {
     const formattedEndTime = endDate + 'T' + endTime + ':00';
 
     // // push new event to their events array
-    user.localEvents.push([eventName, formattedStartTime, formattedEndTime]);
+    user.localEvents.push([eventName, formattedStartTime, formattedEndTime, user.name, user.googleId]);
     user.localEvents = [...new Set(user.localEvents)];
     user.save();
 
