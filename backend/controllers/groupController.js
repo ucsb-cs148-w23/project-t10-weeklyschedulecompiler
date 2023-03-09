@@ -499,7 +499,15 @@ const getFreeTime = async (req, res) => {
       // Convert block start and end times tolocal time
       const localStart = block.start;
       const localEnd = block.end;
-      return { id, text: 'Available Time', start: localStart, end: localEnd };
+      const blockDuration =
+        (block.end.getTime() - block.start.getTime()) / 60000;
+      return {
+        id,
+        text: 'Available Time',
+        start: localStart,
+        end: localEnd,
+        eventDuration: blockDuration,
+      };
     });
 
   // Return the result array

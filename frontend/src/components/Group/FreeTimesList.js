@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { writeEvents } from '../../lib/fetchEvents';
+import SpecificFreeTimeForm from '../forms/SpecificFreeTimeForm';
 
 export default function FreeTimesList({
   freeTimes,
@@ -10,6 +10,7 @@ export default function FreeTimesList({
   hideId,
   eventName,
   eventDescription,
+  selectedDuration,
 }) {
   if (freeTimes.length === 0) {
     return <></>;
@@ -31,32 +32,15 @@ export default function FreeTimesList({
                 className="d-flex align-items-center justify-content-end"
                 md={2}
               >
-                <Button
-                  onClick={() => {
-                    // setEvents([
-                    //   ...events,
-                    //   {
-                    //     id: events.length,
-                    //     text: time.text,
-                    //     start: time.start,
-                    //     end: time.end,
-                    //   },
-                    // ]);
-                    writeEvents(
-                      eventsUrl,
-                      time,
-                      userId.user.id,
-                      hideId,
-                      eventName,
-                      eventDescription
-                    );
-                    setTimeout(() => {
-                      window.location.reload(false);
-                    }, 1000);
-                  }}
-                >
-                  Select
-                </Button>
+                <SpecificFreeTimeForm
+                  time={time}
+                  userId={userId}
+                  eventsUrl={eventsUrl}
+                  hideId={hideId}
+                  eventName={eventName}
+                  eventDescription={eventDescription}
+                  selectedDuration={selectedDuration}
+                ></SpecificFreeTimeForm>
               </Col>
             </Row>
           </ListGroup.Item>

@@ -41,6 +41,7 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
     console.log(range);
     const availability = await getFreeTime(groupId, range);
     setFreeTimes(availability);
+    console.log(availability);
   }
 
   function handleStartTimeChange(event) {
@@ -189,6 +190,7 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
             hideId={hideId}
             eventName={eventName}
             eventDescription={eventDescription}
+            selectedDuration={duration}
           />
         </Modal.Body>
       </Modal>
