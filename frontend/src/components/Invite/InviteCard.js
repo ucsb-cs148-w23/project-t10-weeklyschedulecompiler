@@ -14,12 +14,14 @@ function InviteCard({ user, groupId, groupName, setGroups, setInvites }) {
         acceptInvites(user, groupId).then((data) => {
             setGroups(data.groups);
             setInvites(data.user.invites);
+            setLoadingAccept(false);
         })
     }
 
     function declineInvite() {
         declineInvites(user, groupId).then((data) => {
             setInvites(data.user.invites);
+            setLoadingDecline(false);
         })
     }
 
@@ -31,10 +33,10 @@ function InviteCard({ user, groupId, groupName, setGroups, setInvites }) {
                         <Card.Title>{groupName}</Card.Title>
                     </Col>
                     <Col style={{ display: 'flex', justifyContent: 'end' }}>
-                        <Button className='m-1' variant='success' style={{ width: '40px'}} onClick={() => { acceptInvite(); setLoadingAccept(true); }}>
+                        <Button className='m-1' variant='success' style={{ width: '40px'}} onClick={() => { setLoadingAccept(true); acceptInvite(); }}>
                             {loadingAccept ? <ClipLoader color="#FFFFFF" size={13} /> : <span>&#x2713;</span>}
                         </Button>
-                        <Button className='m-1' variant='danger' style={{ width: '40px'}} onClick={() => { declineInvite(); setLoadingDecline(true); }}>
+                        <Button className='m-1' variant='danger' style={{ width: '40px'}} onClick={() => { setLoadingDecline(true); declineInvite(); }}>
                             {loadingDecline ? <ClipLoader color="#FFFFFF" size={13} /> : <span>&#x2715;</span>}
                         </Button>
                     </Col>
