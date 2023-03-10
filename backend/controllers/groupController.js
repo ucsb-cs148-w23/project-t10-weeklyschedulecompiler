@@ -290,6 +290,7 @@ const updateGroupMemberEvents = async (req, res) => {
   });
   const events = response.data.items;
   let userEvents = [];
+  let createdEvents = [];
   if (!events || events.length === 0) {
     console.log('No upcoming events found.');
   } else {
@@ -322,6 +323,7 @@ const updateGroupMemberEvents = async (req, res) => {
           if (!existingElement) {
             group.createdEvents.push(newGroupEvent);
           }
+          createdEvents.push(newGroupEvent);
           return;
         }
       }
@@ -349,12 +351,7 @@ const updateGroupMemberEvents = async (req, res) => {
     (event) => event.length !== 6
   );
 
-  const currentDate = new Date();
-
-  group.createdEvents = group.createdEvents.filter((event) => {
-    const elementDate = new Date(event[2]);
-    return elementDate >= currentDate;
-  });
+  group.createdEvents = group.createdEvents.filter((event) => createdEvents.includes(event));
 
   group.calendarEvents = [...group.calendarEvents, ...group.createdEvents];
 
