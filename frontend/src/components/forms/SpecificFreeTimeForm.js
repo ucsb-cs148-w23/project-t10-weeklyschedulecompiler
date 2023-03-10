@@ -17,7 +17,6 @@ export default function SpecificFreeTimeForm({
   const [start, setStart] = useState(event_start);
   const [newStart, setNewStart] = useState(event_start);
   const [slider, setSlider] = useState(0);
-  const [newTime, setNewTime] = useState(time);
 
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -124,22 +123,18 @@ export default function SpecificFreeTimeForm({
                     className="justify-content-center"
                     variant="primary"
                     onClick={() => {
-                      setNewTime({
-                        ...time,
-                        start: newStart,
-                        end: addMinutes(newStart, selectedDuration),
-                      });
-
-                      setTimeout(() => {
-                        writeEvents(
-                          eventsUrl,
-                          newTime,
-                          userId.user.id,
-                          hideId,
-                          eventName,
-                          eventDescription
-                        );
-                      }, 1000);
+                      writeEvents(
+                        eventsUrl,
+                        {
+                          ...time,
+                          start: newStart,
+                          end: addMinutes(newStart, selectedDuration),
+                        },
+                        userId.user.id,
+                        hideId,
+                        eventName,
+                        eventDescription
+                      );
                     }}
                   >
                     Submit
