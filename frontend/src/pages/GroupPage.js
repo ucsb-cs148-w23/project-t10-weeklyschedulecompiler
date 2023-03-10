@@ -38,7 +38,6 @@ export default function GroupDetails({ user }) {
   let url = config.url + '/api/group' + groupId;
   let deleteUrl = config.url + '/api/group/members' + groupId;
   let eventsUrl = config.url + '/api/group/events' + groupId;
-  let user_id = user.user.id;
 
   useEffect(() => {
     async function fetchData() {
@@ -155,7 +154,7 @@ export default function GroupDetails({ user }) {
                 variant="danger"
                 onClick={async () => {
                   handleCloseGroup();
-                  const response = await deleteGroup(url, { userId: user_id });
+                  const response = await deleteGroup(url, { userId: user.user.id });
                   if (response?.success) {
                     navigate('/groups');
                   }
