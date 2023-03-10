@@ -11,9 +11,9 @@ import { checkUser } from '../lib/fetchUser';
 import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
 import FreeTimeForm from '../components/forms/FreeTimeForm';
-import CreateEventForm from '../components/forms/CreateEventForm.js';
 import { Modal } from 'react-bootstrap';
 import { deleteGroup } from '../lib/handleGroup';
+import CreateEventForm from '../components/forms/CreateEventForm.js';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
