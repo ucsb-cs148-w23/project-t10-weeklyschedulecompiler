@@ -10,20 +10,32 @@ export default function SpecificFreeTimeForm({
   eventName,
   eventDescription,
   selectedDuration,
+  setShow,
 }) {
-  const [duration, setDuration] = useState(selectedDuration);
-  const [show, setShow] = useState(false);
+  let event_start = new Date(time.start);
+  const [show2, setShow2] = useState(false);
+  const [start, setStart] = useState(event_start);
+  const [newStart, setNewStart] = useState(event_start);
+  const [slider, setSlider] = useState(0);
+  const [newTime, setNewTime] = useState(time);
 
-  function handleClose() {
-    setShow(false);
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  function handleClose2() {
+    setShow2(false);
   }
 
-  function handleShow() {
-    setShow(true);
+  function handleShow2() {
+    setShow2(true);
   }
 
-  function handleDurationChange(event) {
-    setDuration(event.target.value);
+  function handleStartChange(event) {
+    setSlider(event.target.value);
+    setNewStart(addMinutes(start, event.target.value));
+  }
+
+  function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
   }
 
   return (
@@ -31,14 +43,13 @@ export default function SpecificFreeTimeForm({
       <Button
         variant="primary"
         onClick={() => {
-          handleShow();
-          console.log(time);
+          handleShow2();
         }}
       >
         Select
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
           <Modal.Title>Select Free Time</Modal.Title>
         </Modal.Header>
@@ -46,7 +57,7 @@ export default function SpecificFreeTimeForm({
           <Form>
             <Row>
               <Col md={6}>
-                <p>Event Name:</p>
+                <h5>Event Name:</h5>
               </Col>
             </Row>
             <Row>
@@ -56,7 +67,7 @@ export default function SpecificFreeTimeForm({
             </Row>
             <Row style={{ marginTop: '5px' }}>
               <Col style={{ width: '488px' }} md={6}>
-                <p>Event Description:</p>
+                <h5>Event Description:</h5>
               </Col>
             </Row>
             <Row>
@@ -66,10 +77,10 @@ export default function SpecificFreeTimeForm({
             </Row>
             <Row style={{ marginTop: '1px' }}>
               <Col md={6}>
-                <p>Start Time:</p>
+                <h5>Start Time:</h5>
               </Col>
               <Col md={6}>
-                <p>End Time:</p>
+                <h5>End Time:</h5>
               </Col>
             </Row>
 
@@ -85,20 +96,23 @@ export default function SpecificFreeTimeForm({
             <Row>
               <Col md={12}>
                 <Form.Group controlId="duration">
-                  <Form.Label>Event Duration:</Form.Label>
+                  <Form.Label>
+                    <h5>Event Duration:</h5>
+                  </Form.Label>
                   <Form.Control
                     type="range"
                     min="0"
-                    max={time.eventDuration}
+                    max={time.eventDuration - 60}
                     step="15"
-                    value={duration}
-                    onChange={handleDurationChange}
+                    value={slider}
+                    onChange={handleStartChange}
                   />
                   <p className="text-center">
-                    {Math.floor(duration / 60)} hour
-                    {Math.floor(duration / 60) !== 1 ? 's' : ''} {duration % 60}{' '}
-                    minute
-                    {duration % 60 !== 1 ? 's' : ''}
+                    {newStart.toLocaleString('en-US', { timeZone: timezone })} -{' '}
+                    {addMinutes(newStart, selectedDuration).toLocaleString(
+                      'en-US',
+                      { timeZone: timezone }
+                    )}
                   </p>
                 </Form.Group>
               </Col>
@@ -109,27 +123,22 @@ export default function SpecificFreeTimeForm({
                   <Button
                     className="justify-content-center"
                     variant="primary"
-                    type="submit"
                     onClick={() => {
-                      // setEvents([
-                      //   ...events,
-                      //   {
-                      //     id: events.length,
-                      //     text: time.text,
-                      //     start: time.start,
-                      //     end: time.end,
-                      //   },
-                      // ]);
-                      writeEvents(
-                        eventsUrl,
-                        time,
-                        userId.user.id,
-                        hideId,
-                        eventName,
-                        eventDescription
-                      );
+                      setNewTime({
+                        ...time,
+                        start: newStart,
+                        end: addMinutes(newStart, selectedDuration),
+                      });
+
                       setTimeout(() => {
-                        window.location.reload(false);
+                        writeEvents(
+                          eventsUrl,
+                          newTime,
+                          userId.user.id,
+                          hideId,
+                          eventName,
+                          eventDescription
+                        );
                       }, 1000);
                     }}
                   >

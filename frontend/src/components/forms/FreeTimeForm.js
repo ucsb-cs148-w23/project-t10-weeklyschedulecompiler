@@ -69,7 +69,7 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Row>
-              <Col md={6}>
+              <Col style={{ width: '488px' }} md={6}>
                 <Form.Group controlId="name">
                   <Form.Label>Event Name:</Form.Label>
                   <Form.Control
@@ -191,6 +191,7 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
             eventName={eventName}
             eventDescription={eventDescription}
             selectedDuration={duration}
+            setShow={setShow}
           />
         </Modal.Body>
       </Modal>

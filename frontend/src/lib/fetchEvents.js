@@ -104,6 +104,7 @@ export async function getFreeTime(groupId, range) {
       text: event.text,
       start: start.toLocaleString('en-US', { timeZone: timezone }),
       end: end.toLocaleString('en-US', { timeZone: timezone }),
+      eventDuration: event.eventDuration,
     };
   });
 
@@ -134,6 +135,6 @@ export async function writeEvents(
   });
 
   const message = await response.json();
-  console.log(message);
+  console.log('hi');
   return message;
 }

@@ -11,6 +11,7 @@ export default function FreeTimesList({
   eventName,
   eventDescription,
   selectedDuration,
+  setShow,
 }) {
   if (freeTimes.length === 0) {
     return <></>;
@@ -40,6 +41,7 @@ export default function FreeTimesList({
                   eventName={eventName}
                   eventDescription={eventDescription}
                   selectedDuration={selectedDuration}
+                  setShow={setShow}
                 ></SpecificFreeTimeForm>
               </Col>
             </Row>
