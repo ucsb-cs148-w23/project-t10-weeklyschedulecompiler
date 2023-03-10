@@ -1,5 +1,5 @@
 import DefaultLayout from '../layouts/DefaultLayout';
-import { Button, Container, Row, Col, ButtonGroup, DropdownButton } from 'react-bootstrap';
+import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap';
 import AddGroupMembersForm from '../components/forms/AddGroupMembersForm';
 import DeleteGroupButton from '../components/Buttons/DeleteGroupButton';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,8 @@ import MemberList from '../components/Group/memberList';
 import DeleteModal from '../components/Group/DeleteModal';
 import FreeTimeForm from '../components/forms/FreeTimeForm';
 import CreateEventForm from '../components/forms/CreateEventForm.js';
+import { Modal } from 'react-bootstrap';
+import { deleteGroup } from '../lib/handleGroup';
 
 const CLASSNAME = 'd-flex justify-content-center align-items-center';
 
