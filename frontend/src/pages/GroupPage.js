@@ -93,9 +93,6 @@ export default function GroupDetails({ user }) {
             <ButtonGroup style={{marginBottom: '5%', marginRight: '0.5%'}}>
               <FreeTimeForm events={events} setEvents={setEvents} />
             </ButtonGroup>
-            <ButtonGroup style={{marginBottom: '5%'}}>
-              <CreateEventForm user={user}></CreateEventForm>
-            </ButtonGroup>
           </div>
           <Container fluid>
             <Row className="mb-3 d-flex justify-content-center align-items-center">
