@@ -40,6 +40,9 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
     };
     console.log(range);
     const availability = await getFreeTime(groupId, range);
+    if (availability.length === 0) {
+      alert('No free time available');
+    }
     setFreeTimes(availability);
     console.log(availability);
   }

@@ -108,7 +108,6 @@ export async function getFreeTime(groupId, range) {
     };
   });
 
-  // console.log(freeTimes);
   return freeTimes;
 }
 
