@@ -1,6 +1,6 @@
 .about-container {
   background-image: url("https://e1.pxfuel.com/desktop-wallpaper/820/687/desktop-wallpaper-1080x1920-baby-blue-eyes-solid-color-backgrounds-solid-color-phone.jpg");  height: 98vh;
-  margin-top: -3%;
+  margin-top: 0%;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@
 .about-title {
   font-size: 5vw;
   font-weight: 3;
-  margin-top: 2%;
+  margin-top: 0%;
   color: black;
   text-align: center;
 }

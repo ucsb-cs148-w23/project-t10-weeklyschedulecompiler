@@ -6,7 +6,7 @@ import {
   DayPilotNavigator,
 } from '@daypilot/daypilot-lite-react';
 import { fetchUserEvents } from '../../lib/fetchEvents';
-
+import "../../style/Cal.css"
 const styles = {
   left: {
     marginRight: '10px',
