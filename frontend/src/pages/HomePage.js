@@ -7,7 +7,7 @@ import DefaultLayout from "../layouts/DefaultLayout"
 
 export default function HomePage({ user }) {
   const navigate = useNavigate();
-  const welcomeMessage = "Welcome, " + user.user.displayName+"!";
+  const welcomeMessage = "Welcome, " + user?.user?.displayName+"!";
   useEffect(() => {
     async function localCheckUser() {
       const user = await checkUser();
