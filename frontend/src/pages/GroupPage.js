@@ -109,7 +109,7 @@ export default function GroupDetails({ user }) {
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
                 {admin.isAdmin && edit && (
-                  <AddGroupMembersForm user={user}></AddGroupMembersForm>
+                  <AddGroupMembersForm user={user} groupName={name} groupId={groupId.substring(1)}></AddGroupMembersForm>
                 )}
               </Col>
               <Col></Col>
@@ -127,7 +127,18 @@ export default function GroupDetails({ user }) {
                   ></DeleteGroupButton>
                 )}
               </Col>
-              <Col></Col>
+            </Row>
+            <Row>
+              <Col
+                style={{ paddingTop: '5%' }}
+                className="d-flex justify-content-center align-items-center mx-auto"
+              >
+                <FreeTimeForm
+                  events={events}
+                  setEvents={setEvents}
+                  hideId={hideId}
+                />
+              </Col>
             </Row>
           </Container>
           <DeleteModal
