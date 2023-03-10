@@ -3,16 +3,8 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import EventCalendar from '../components/calender/EventCalendar';
 import { checkUser } from '../lib/fetchUser';
-<<<<<<< HEAD
-import CreateEventForm from '../components/forms/CreateEventForm';
-
-const start = 'd-flex justify-content-start align-items-center';
-const center = 'd-flex justify-content-center align-items-center';
-const end = 'd-flex justify-content-end align-items-center';
-const CLASSNAME = 'd-flex justify-content-center align-items-center';
-=======
 import DefaultLayout from "../layouts/DefaultLayout"
->>>>>>> main
+import CreateEventForm from '../components/forms/CreateEventForm';
 
 export default function HomePage({ user }) {
   const navigate = useNavigate();
@@ -26,8 +18,24 @@ export default function HomePage({ user }) {
   });
 
   return (
-    <><DefaultLayout header={welcomeMessage}>
-      <EventCalendar groups={false} user={user} style={{ marginLeft: '1px' }} />
+    <><DefaultLayout>
+      <Row>
+        <Col>
+        </Col>
+        <Col className='d-flex justify-content-center align-items-center'>
+          <h1>{welcomeMessage}</h1>
+        </Col>
+        <Col className='d-flex justify-content-center align-items-center'> 
+          <CreateEventForm user={user}></CreateEventForm>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <EventCalendar groups={false} user={user} style={{ marginLeft: '1px' }} />
+        </Col>
+      </Row>
+ 
+
     </DefaultLayout><div className='background_padding'></div></>
   );
 }
