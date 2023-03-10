@@ -56,7 +56,7 @@ export default function SpecificFreeTimeForm({
 
       <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
-          <Modal.Title>Select Free Time</Modal.Title>
+          <Modal.Title>Create A New Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>

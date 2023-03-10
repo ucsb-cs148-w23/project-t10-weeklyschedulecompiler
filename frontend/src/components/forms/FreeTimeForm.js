@@ -63,12 +63,12 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Select Free Time
+        Create A New Event
       </Button>
       <Modal show={show} onHide={handleClose}>
         <div style={{ display: createEventModal ? 'none' : '' }}>
           <Modal.Header closeButton>
-            <Modal.Title>Select Free Time</Modal.Title>
+            <Modal.Title>Create A New Event</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
