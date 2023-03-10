@@ -127,18 +127,7 @@ export default function GroupDetails({ user }) {
                   ></DeleteGroupButton>
                 )}
               </Col>
-            </Row>
-            <Row>
-              <Col
-                style={{ paddingTop: '5%' }}
-                className="d-flex justify-content-center align-items-center mx-auto"
-              >
-                <FreeTimeForm
-                  events={events}
-                  setEvents={setEvents}
-                  hideId={hideId}
-                />
-              </Col>
+              <Col></Col>
             </Row>
           </Container>
           <DeleteModal
