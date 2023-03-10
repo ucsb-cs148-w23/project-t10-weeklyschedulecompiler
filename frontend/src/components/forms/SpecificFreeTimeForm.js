@@ -11,6 +11,7 @@ export default function SpecificFreeTimeForm({
   eventDescription,
   selectedDuration,
   setShow,
+  setCreateEvent,
 }) {
   let event_start = new Date(time.start);
   const [show2, setShow2] = useState(false);
@@ -22,6 +23,10 @@ export default function SpecificFreeTimeForm({
 
   function handleClose2() {
     setShow2(false);
+    setShow(false);
+    setTimeout(() => {
+      setCreateEvent(false);
+    }, 200);
   }
 
   function handleShow2() {
@@ -43,6 +48,7 @@ export default function SpecificFreeTimeForm({
         variant="primary"
         onClick={() => {
           handleShow2();
+          setCreateEvent(true);
         }}
       >
         Select
@@ -135,6 +141,7 @@ export default function SpecificFreeTimeForm({
                         eventName,
                         eventDescription
                       );
+                      window.location.reload(false);
                     }}
                   >
                     Submit
