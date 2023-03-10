@@ -47,12 +47,12 @@ export default function CreateEventForm({user}) {
   return (
     <>
     <Button variant="primary" onClick={handleShow}>
-      Create New Event
+      Add New Event
       </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Create New Event</Modal.Title>
+          <Modal.Title>Add New Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={createEvent}>
