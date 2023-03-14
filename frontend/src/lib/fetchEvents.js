@@ -14,7 +14,7 @@ export async function fetchUserEvents(user) {
     const responseJson = await response.json();
     const events = responseJson?.events.map((event, idx) => {
       return {
-        id: idx,
+        id: event[event.length - 1],
         text: event[0],
         start: event[1],
         end: event[2],
@@ -47,7 +47,7 @@ export async function fetchGroupEvents(url, hideId) {
 
   groupEvents = groupEvents.map((event, idx) => {
     return {
-      id: idx,
+      id: event[event.length - 1],
       text: event[3] + "'s Event",
       start: event[1],
       end: event[2],
@@ -136,4 +136,15 @@ export async function writeEvents(
   const message = await response.json();
   console.log('hi');
   return message;
+}
+
+export async function deleteEvents(userId, eventId, eventsUrl) {
+  const response = await fetch(eventsUrl, {
+    method: 'DELETE',
+    body: JSON.stringify({ id: userId, eventId }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
 }

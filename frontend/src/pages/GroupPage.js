@@ -74,12 +74,17 @@ export default function GroupDetails({ user }) {
     <DefaultLayout className={CLASSNAME} header={`${name}`}>
       <Row>
         <Col xs={8}>
-          <EventCalendar events={events} groups={true} />
+          <EventCalendar
+            events={events}
+            user={user}
+            eventsUrl={eventsUrl}
+            groups={true}
+          />
         </Col>
 
         <Col>
           <div className="d-flex justify-content-center align-items-center mx-auto">
-            <ButtonGroup style={{marginBottom: '5%', marginRight: '0.5%'}}>
+            <ButtonGroup style={{ marginBottom: '5%', marginRight: '0.5%' }}>
               {admin.isAdmin && (
                 <Button
                   onClick={() => {
@@ -90,7 +95,7 @@ export default function GroupDetails({ user }) {
                 </Button>
               )}
             </ButtonGroup>
-            <ButtonGroup style={{marginBottom: '5%', marginRight: '0.5%'}}>
+            <ButtonGroup style={{ marginBottom: '5%', marginRight: '0.5%' }}>
               <FreeTimeForm events={events} setEvents={setEvents} />
             </ButtonGroup>
           </div>
@@ -113,7 +118,6 @@ export default function GroupDetails({ user }) {
               </Col>
             </Row>
             <Row>
-              
               <Col></Col>
               <Col className="d-flex justify-content-center align-items-center mx-auto">
                 {admin.isAdmin && edit && (
@@ -167,7 +171,9 @@ export default function GroupDetails({ user }) {
             <Modal.Header closeButton>
               <Modal.Title>Remove {del_group}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to remove group {del_group}?</Modal.Body>
+            <Modal.Body>
+              Are you sure you want to remove group {del_group}?
+            </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseGroup}>
                 Close
@@ -176,7 +182,9 @@ export default function GroupDetails({ user }) {
                 variant="danger"
                 onClick={async () => {
                   handleCloseGroup();
-                  const response = await deleteGroup(url, { userId: user.user.id });
+                  const response = await deleteGroup(url, {
+                    userId: user.user.id,
+                  });
                   if (response?.success) {
                     navigate('/groups');
                   }
