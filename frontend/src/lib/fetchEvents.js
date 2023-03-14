@@ -94,16 +94,14 @@ export async function getFreeTime(groupId, range) {
   });
   const events = await response.json();
 
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   const freeTimes = events.map((event) => {
     const start = new Date(event.start);
     const end = new Date(event.end);
 
     return {
       text: event.text,
-      start: start.toLocaleString('en-US', { timeZone: timezone }),
-      end: end.toLocaleString('en-US', { timeZone: timezone }),
+      start: start.toLocaleString('en-US'),
+      end: end.toLocaleString('en-US'),
       eventDuration: event.eventDuration,
     };
   });
