@@ -79,6 +79,7 @@ export default function GroupDetails({ user }) {
             user={user}
             eventsUrl={eventsUrl}
             groups={true}
+            groupId={groupId}
           />
         </Col>
 

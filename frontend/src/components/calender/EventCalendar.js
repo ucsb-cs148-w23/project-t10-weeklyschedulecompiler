@@ -6,7 +6,10 @@ import {
   DayPilotCalendar,
   DayPilotNavigator,
 } from '@daypilot/daypilot-lite-react';
-import { fetchUserEvents } from '../../lib/fetchEvents';
+import {
+  fetchUserEvents,
+  updateGroupMemberEvents,
+} from '../../lib/fetchEvents';
 import '../../style/Cal.css';
 import { deleteEvents } from '../../lib/fetchEvents';
 const styles = {
@@ -59,8 +62,12 @@ class EventCalendar extends Component {
   };
 
   handleDelete = () => {
-    console.log(this.props.user);
-    deleteEvents(this.props.user, this.state.eventId, this.props.eventsUrl);
+    deleteEvents(
+      this.props.user.user.id,
+      this.state.eventId,
+      this.props.eventsUrl
+    );
+    this.setState({ show: false });
   };
 
   render() {

@@ -43,6 +43,6 @@ router.patch('/free/:id', getFreeTime);
 router.post('/events/:id', writeToGoogleCalendar);
 
 //DELETE google calendar event
-router.delete('events/:id', DeleteFromGoogleCalendar);
+router.delete('/events/:id', DeleteFromGoogleCalendar);
 
 module.exports = router;
