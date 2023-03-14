@@ -404,10 +404,10 @@ const getFreeTime = async (req, res) => {
     });
   }
 
-  const startDate = new Date(`${startDateStr}T00:00:00`);
-  const endDate = new Date(`${endDateStr}T00:00:00`);
-  const startTime = new Date(`1970-01-01T${startTimeStr}:00`);
-  const endTime = new Date(`1970-01-01T${endTimeStr}:00`);
+  const startDate = new Date(`${startDateStr}T00:00:00Z-07:00`);
+  const endDate = new Date(`${endDateStr}T00:00:00Z-07:00`);
+  const startTime = new Date(`1970-01-01T${startTimeStr}:00Z-07:00`);
+  const endTime = new Date(`1970-01-01T${endTimeStr}:00Z-07:00`);
 
   const calendarEvents = events.map((event) => {
     return { start: new Date(`${event[1]}`), end: new Date(`${event[2]}`) };
@@ -501,7 +501,7 @@ const getFreeTime = async (req, res) => {
       return blockDuration >= duration;
     })
     .map((block, id) => {
-      // Convert block start and end times to local time
+      // Convert block start and end times tolocal time
       const localStart = block.start;
       const localEnd = block.end;
       const blockDuration =
@@ -509,8 +509,8 @@ const getFreeTime = async (req, res) => {
       return {
         id,
         text: 'Available Time',
-        start: localStart.setHours(localStart.getHours() + 7),
-        end: localEnd.setHours(localStart.getHours() + 7),
+        start: localStart,
+        end: localEnd,
         eventDuration: blockDuration,
       };
     });
