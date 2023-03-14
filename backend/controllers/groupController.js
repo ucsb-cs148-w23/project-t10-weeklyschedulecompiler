@@ -501,7 +501,7 @@ const getFreeTime = async (req, res) => {
       return blockDuration >= duration;
     })
     .map((block, id) => {
-      // Convert block start and end times tolocal time
+      // Convert block start and end times to local time
       const localStart = block.start;
       const localEnd = block.end;
       const blockDuration =
@@ -509,8 +509,8 @@ const getFreeTime = async (req, res) => {
       return {
         id,
         text: 'Available Time',
-        start: localStart,
-        end: localEnd,
+        start: localStart.setHours(localStart.getHours() + 7),
+        end: localEnd.setHours(localStart.getHours() + 7),
         eventDuration: blockDuration,
       };
     });
