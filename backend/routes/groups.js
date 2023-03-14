@@ -10,6 +10,7 @@ const {
   updateGroupMemberEvents,
   getFreeTime,
   writeToGoogleCalendar,
+  DeleteFromGoogleCalendar,
 } = require('../controllers/groupController');
 // GET a single group
 router.get('/:id', getGroup);
@@ -40,5 +41,8 @@ router.patch('/free/:id', getFreeTime);
 
 //CREATE google calendar with a new event
 router.post('/events/:id', writeToGoogleCalendar);
+
+//DELETE google calendar event
+router.delete('/events/:id', DeleteFromGoogleCalendar);
 
 module.exports = router;

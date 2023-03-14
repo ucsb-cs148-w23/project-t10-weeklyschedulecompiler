@@ -1,12 +1,17 @@
 /* istanbul ignore file */
 
 import React, { Component } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 import {
   DayPilotCalendar,
   DayPilotNavigator,
 } from '@daypilot/daypilot-lite-react';
-import { fetchUserEvents } from '../../lib/fetchEvents';
-import "../../style/Cal.css"
+import {
+  fetchUserEvents,
+  updateGroupMemberEvents,
+} from '../../lib/fetchEvents';
+import '../../style/Cal.css';
+import { deleteEvents } from '../../lib/fetchEvents';
 const styles = {
   left: {
     marginRight: '10px',
@@ -21,8 +26,8 @@ class EventCalendar extends Component {
     super(props);
     this.calendarRef = React.createRef();
     this.state = {
-      viewType: 'Week',
-      durationBarVisible: false,
+      show: false,
+      eventId: '',
     };
   }
 
@@ -43,8 +48,29 @@ class EventCalendar extends Component {
     }, 500);
   }
 
+  handleShow = () => {
+    this.setState({
+      show: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      show: false,
+    });
+    window.location.reload(false);
+  };
+
+  handleDelete = () => {
+    deleteEvents(
+      this.props.user.user.id,
+      this.state.eventId,
+      this.props.eventsUrl
+    );
+    this.setState({ show: false });
+  };
+
   render() {
-    const { ...config } = this.state;
     return (
       <div
         style={{
@@ -52,7 +78,7 @@ class EventCalendar extends Component {
           marginTop: this.props.groups ? null : '2vh',
           marginLeft: !this.props.groups ? null : '2vw',
           marginLeft: '2vw',
-          marginRight: '2vw'
+          marginRight: '2vw',
         }}
       >
         <div style={styles.left}>
@@ -70,9 +96,32 @@ class EventCalendar extends Component {
         <div style={styles.main}>
           <DayPilotCalendar
             eventMoveHandling="Disabled"
-            {...config}
+            eventResizeHandling="Disabled"
+            eventDeleteHandling="Update"
+            onEventDelete={(args) => {
+              this.setState({ eventId: args.e.id() });
+              this.handleShow();
+            }}
+            durationBarVisible={true}
+            viewType="Week"
             ref={this.calendarRef}
           />
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                Are you sure you want to delete this event?
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+              <Button variant="danger" onClick={this.handleDelete}>
+                Delete
+              </Button>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          ;
         </div>
       </div>
     );

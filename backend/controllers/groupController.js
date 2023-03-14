@@ -316,7 +316,9 @@ const updateGroupMemberEvents = async (req, res) => {
             'Group ' + group.name,
             group.admin,
             eventID,
+            event.id,
           ];
+
           const existingElement = group.createdEvents.find(
             (event) => event[5] === newGroupEvent[5]
           );
@@ -334,9 +336,11 @@ const updateGroupMemberEvents = async (req, res) => {
           end.substring(0, end.lastIndexOf('-')),
           user.name,
           user.googleId,
+          event.id,
         ]);
     });
   }
+
   user.events = userEvents;
   userEvents = userEvents.concat(user.localEvents);
   console.log(userEvents);
@@ -348,7 +352,7 @@ const updateGroupMemberEvents = async (req, res) => {
   }
 
   group.calendarEvents = group.calendarEvents.filter(
-    (event) => event.length !== 6
+    (event) => event.length !== 7
   );
 
   group.createdEvents = group.createdEvents.filter((event) => {
@@ -362,6 +366,7 @@ const updateGroupMemberEvents = async (req, res) => {
   });
 
   group.calendarEvents = [...group.calendarEvents, ...group.createdEvents];
+  console.log(group.calendarEvents);
 
   group.save();
 
@@ -675,6 +680,8 @@ const writeToGoogleCalendar = async (req, res) => {
 
   const calendar = google.calendar({ version: 'v3', auth });
 
+  console.log(calendar);
+
   let groupEmails = [];
   let newGroupMembers = group.groupMembers;
 
@@ -741,6 +748,47 @@ const writeToGoogleCalendar = async (req, res) => {
   );
 };
 
+const DeleteFromGoogleCalendar = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.body.id;
+  const eventId = req.body.eventId;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'No such group' });
+  }
+
+  let user = await User.findOne({ googleId: userId });
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' });
+  }
+
+  let group = await Group.findOne({ _id: id });
+
+  if (!group) {
+    return res.status(400).json({ error: 'No such group' });
+  }
+
+  const credentials = {
+    type: 'authorized_user',
+    client_id: config.googleClientID,
+    client_secret: config.googleClientSecret,
+    refresh_token: user.refreshToken,
+  };
+
+  auth = google.auth.fromJSON(credentials);
+
+  const calendar = google.calendar({ version: 'v3', auth });
+
+  const response = calendar.events.delete({
+    auth: auth,
+    calendarId: 'primary',
+    eventId: eventId,
+  });
+
+  res.status(200).json({ response });
+};
+
 module.exports = {
   getGroup,
   createGroup,
@@ -752,4 +800,5 @@ module.exports = {
   updateGroupMemberEvents,
   getFreeTime,
   writeToGoogleCalendar,
+  DeleteFromGoogleCalendar,
 };
