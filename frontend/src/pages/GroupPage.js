@@ -71,7 +71,7 @@ export default function GroupDetails({ user }) {
   }, [events]);
 
   return (
-    <DefaultLayout className={CLASSNAME} header={`${name}`}>
+    <><DefaultLayout className={CLASSNAME} header={`${name}`}>
       <Row>
         <Col xs={8}>
           <EventCalendar events={events} groups={true} />
@@ -191,6 +191,6 @@ export default function GroupDetails({ user }) {
           </Modal>
         </Col>
       </Row>
-    </DefaultLayout>
+    </DefaultLayout><div className='background_padding'></div></>
   );
 }

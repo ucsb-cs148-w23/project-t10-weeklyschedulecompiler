@@ -29,11 +29,11 @@ function CreateGroupForm({user}) {
 
 
     return (
-        <Form onSubmit={createGroup} style={{fontSize: "30px", marginTop: "25px"}}>
-          <label style={{marginLeft: '10px'}}>Enter Group Name</label>
+        <Form onSubmit={createGroup} style={{fontSize: "200%", marginTop: "10%", marginLeft: "25%"}}>
+          <div>Enter Group Name</div>
           <div>
             <input
-                style = {{marginTop: "15px", fontSize:"25px"}}
+                style = {{marginTop: "7%", fontSize:"80%"}}
                 type="text"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
@@ -41,7 +41,7 @@ function CreateGroupForm({user}) {
             />
           </div>
           <div>
-            <Button style={{marginTop: "25px", fontSize: "25px",marginLeft: "73px"}} type="submit">Submit</Button>
+            <Button style={{marginTop: "10%", fontSize: "70%",marginLeft: "20%"}} type="submit">Submit</Button>
           </div>
         </Form>
       );

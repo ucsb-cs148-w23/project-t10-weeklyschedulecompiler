@@ -36,6 +36,6 @@ export default function HomePage({ user }) {
       </Row>
  
 
-    </DefaultLayout><div className='background_padding2'></div></>
+    </DefaultLayout><div className='background_padding'></div></>
   );
 }

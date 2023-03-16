@@ -16,7 +16,8 @@ const CreateGroupPage = ({ user }) => {
   });
 
   return (
-    <><DefaultLayout header={'Create a Group'}>
+    <><DefaultLayout>
+      <h1 className='d-flex justify-content-center align-items-center' style={{fontSize: '500%'}}>Create a Group!</h1>
       <CreateGroupForm user={user}></CreateGroupForm>
     </DefaultLayout><div className='background_padding'></div></>
   );
