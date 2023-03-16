@@ -115,7 +115,7 @@ export default function GroupDetails({ user }) {
             <Row>
               
               <Col></Col>
-              <Col className="d-flex justify-content-center align-items-center mx-auto">
+              <Col style={{paddingLeft: '6%'}} className="d-flex justify-content-center align-items-center mx-auto">
                 {admin.isAdmin && edit && (
                   <AddGroupMembersForm
                     user={user}
