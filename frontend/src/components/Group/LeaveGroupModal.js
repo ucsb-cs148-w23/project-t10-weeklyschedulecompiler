@@ -27,9 +27,6 @@ export default function LeaveGroupModal(props) {
                     if (response?.success) {
                         navigate('/groups');
                     }
-                    setTimeout(() => {
-                    window.location.reload(false);
-                    }, 1000);
                 }}
                 >
                 Leave Group
