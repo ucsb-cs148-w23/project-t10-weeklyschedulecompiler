@@ -39,13 +39,11 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
       duration,
       hideId,
     };
-    console.log(range);
     const availability = await getFreeTime(groupId, range);
     if (availability.length === 0) {
       alert('No free time available');
     }
     setFreeTimes(availability);
-    console.log(availability);
   }
 
   function handleStartTimeChange(event) {
@@ -63,7 +61,7 @@ export default function FreeTimeForm({ hideId, eventsUrl, userId }) {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Create A New Event
+        Schedule New Group Event
       </Button>
       <Modal show={show} onHide={handleClose}>
         <div style={{ display: createEventModal ? 'none' : '' }}>
